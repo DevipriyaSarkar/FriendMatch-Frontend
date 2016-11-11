@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="page_title">
+        <item>Feed</item>
+        <item>Friends</item>
+    </string-array>
+
+    <array name="page_icon">
+        <item>@drawable/newspaper</item>
+        <item>@drawable/human_greeting</item>
+    </array>
+
+</resources>

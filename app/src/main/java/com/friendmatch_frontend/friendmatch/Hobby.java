@@ -1,30 +1,30 @@
 package com.friendmatch_frontend.friendmatch;
 
 public class Hobby {
-    private String hobby_name;
-    private int hobby_img;
+    private String hobbyName;
+    private int hobbyImg;
 
     public Hobby() {}
 
-    public Hobby(String hobby_name, int hobby_img) {
-        this.hobby_name = hobby_name;
-        this.hobby_img = hobby_img;
+    public Hobby(String hobbyName, int hobbyImg) {
+        this.hobbyName = hobbyName;
+        this.hobbyImg = hobbyImg;
     }
 
-    public void setHobby_name(String hobby_name) {
-        this.hobby_name = hobby_name;
+    public void setHobbyName(String hobbyName) {
+        this.hobbyName = hobbyName;
     }
 
-    public void setHobby_img(int hobby_img) {
-        this.hobby_img = hobby_img;
+    public void setHobbyImg(int hobbyImg) {
+        this.hobbyImg = hobbyImg;
     }
 
-    public String getHobby_name() {
-        return hobby_name;
+    public String getHobbyName() {
+        return hobbyName;
     }
 
-    public int getHobby_img() {
-        return hobby_img;
+    public int getHobbyImg() {
+        return hobbyImg;
     }
 
 }

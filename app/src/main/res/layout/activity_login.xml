@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:background="@color/colorPrimary"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -36,6 +37,7 @@
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1" />
@@ -52,6 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
+                    android:textColor="@android:color/white"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in"
                     android:imeOptions="actionUnspecified"
@@ -67,7 +70,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/login_widget_margin"
                 android:text="@string/action_sign_in"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:background="@color/colorAccentLight"
+                android:textColor="@android:color/white"/>
 
             <Button
                 android:id="@+id/register_button"
@@ -75,7 +80,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/login_widget_margin"
-                android:text="@string/action_register" />
+                android:text="@string/action_register"
+                android:background="@color/colorAccentLight"
+                android:textColor="@android:color/white"
+                />
 
         </LinearLayout>
     </ScrollView>

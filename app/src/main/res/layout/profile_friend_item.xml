@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardElevation="@dimen/hobby_card_elevation"
+    card_view:cardElevation="@dimen/friend_card_elevation"
     card_view:cardPreventCornerOverlap="true"
     card_view:cardUseCompatPadding="true" >
 
@@ -16,15 +16,15 @@
         android:orientation="vertical" >
 
         <ImageView
-            android:id="@+id/hobbyImage"
+            android:id="@+id/friendImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:contentDescription="@string/hobby_image_content_desc" />
+            android:contentDescription="@string/friend_image_content_desc" />
 
         <TextView
-            android:id="@+id/hobbyText"
+            android:id="@+id/friendName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

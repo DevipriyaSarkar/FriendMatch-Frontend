@@ -23,12 +23,12 @@
             android:name=".LoginActivity"
             android:label="@string/app_name"
             android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.StatusBar" />
         <activity
             android:name=".SplashActivity"
             android:label="@string/app_name"
             android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar.StatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -6,13 +6,14 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName() ;
     ProgressDialog pDialog;
-    LinearLayout activity_profile;
+    ScrollView activity_profile;
     int userID;
 
     @Override
@@ -45,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        activity_profile = (LinearLayout) findViewById(R.id.activity_profile);
+        activity_profile = (ScrollView) findViewById(R.id.activity_profile);
 
         // initialize progress dialog
         pDialog = new ProgressDialog(this);
@@ -182,19 +183,16 @@ public class ProfileActivity extends AppCompatActivity {
             hobbyLayout.setVisibility(View.VISIBLE);
             hobbyError.setVisibility(View.GONE);
 
-            // UI references
-
-
-            // extract data
             ArrayList<Hobby> hobbyArrayList = new ArrayList<>();
-
             JSONArray hobbyJSONArray = hobbyObj.getJSONArray("hobby");
             for (int i = 0; i < hobbyJSONArray.length(); i++) {
                 Hobby h = new Hobby(hobbyJSONArray.get(i).toString(), R.drawable.hobby);
                 hobbyArrayList.add(h);
             }
 
-            // set data
+            GridView hobbyGrid = (GridView) findViewById(R.id.hobbyGrid);
+            HobbyGridAdapter hobbyGridAdapter = new HobbyGridAdapter(getApplicationContext(), hobbyArrayList);
+            hobbyGrid.setAdapter(hobbyGridAdapter);
 
         } else {
             hobbyLayout.setVisibility(View.GONE);
@@ -206,15 +204,39 @@ public class ProfileActivity extends AppCompatActivity {
         int code = friendsObj.getInt("code");
         Log.d(TAG, "Code (friends): " + code);
 
+        LinearLayout friendLayout = (LinearLayout) findViewById(R.id.friendLayout);
+        CardView friendError = (CardView) findViewById(R.id.friendError);
+
+        if (code == 200) {
+            friendLayout.setVisibility(View.VISIBLE);
+            friendError.setVisibility(View.GONE);
+
+            ArrayList<User> friendArrayList = new ArrayList<>();
+            JSONArray friendJSONArray = friendsObj.getJSONArray("friends");
+            for (int i = 0; i < friendJSONArray.length(); i++) {
+                JSONObject friend = friendJSONArray.getJSONObject(i);
+                User user = new User(friend.getInt("friend_id"), friend.getString("user_name"), friend.getString("gender"));
+                friendArrayList.add(user);
+            }
+
+            GridView friendGrid = (GridView) findViewById(R.id.friendGrid);
+            FriendGridAdapter friendGridAdapter = new FriendGridAdapter(getApplicationContext(), friendArrayList);
+            friendGrid.setAdapter(friendGridAdapter);
+
+        } else {
+            friendLayout.setVisibility(View.GONE);
+            friendError.setVisibility(View.VISIBLE);
+        }
+
     }
 
     public void setProfilePicture(ImageView imageView, int gender) {
         // 0 for male, 1 for female
         Bitmap iconBitmap;
         if (gender == 0) {
-            iconBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.man);
+            iconBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.male);
         } else {
-            iconBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman);
+            iconBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.female);
         }
 
         RoundedBitmapDrawable roundDrawable =

@@ -23,9 +23,9 @@
     <string name="network_error">Sorry, we could not connect to our server. Please try later.</string>
     <string name="error_incorrect_credentials">Incorrect credentials</string>
     <string name="action_register">New to Friend Match? Register</string>
-    <string name="start_button_text">Let\'s Get Started!</string>
+    <string name="start_button_text">LET\'S GET STARTED!</string>
     <string name="title_activity_register">Sign Up</string>
-    <string name="action_sign_up">Sign Up</string>
+    <string name="action_sign_up">SIGN UP</string>
     <string name="prompt_name">Full Name</string>
     <string name="error_invalid_name">Invalid name</string>
     <string name="nav_menu_profile">Profile</string>
@@ -52,5 +52,11 @@
     <string name="hobby_error_text">Could not get the hobbies.</string>
     <string name="hobby_section_title">Hobbies</string>
     <string name="info_email_title">E-mail ID:</string>
+    <string name="friends_section_title">Friends</string>
+    <string name="friend_error_text">Could not get the friend list.</string>
+    <string name="friend_image_content_desc">Friend Profile Picture</string>
+    <string name="hobby_image_content_desc">Hobby Image</string>
+    <string name="default_nav_user_name">User Name</string>
+    <string name="default_nav_user_email">abc@example.com</string>
 
 </resources>

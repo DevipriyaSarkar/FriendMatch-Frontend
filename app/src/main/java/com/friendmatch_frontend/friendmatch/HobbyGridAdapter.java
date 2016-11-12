@@ -1,0 +1,59 @@
+package com.friendmatch_frontend.friendmatch;
+
+import android.content.Context;
+import android.media.Image;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+
+class HobbyGridAdapter extends BaseAdapter {
+
+    private Context context;
+    private ArrayList<Hobby> hobbyArrayList;
+
+    HobbyGridAdapter(Context context, ArrayList<Hobby> hobbyArrayList) {
+        this.context = context;
+        this.hobbyArrayList = hobbyArrayList;
+    }
+
+    @Override
+    public int getCount() {
+        return hobbyArrayList.size();
+    }
+
+    public Hobby getItem(int index) {
+        return hobbyArrayList.get(index);
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View view, ViewGroup viewGroup) {
+        TextView hobbyTextView;
+        ImageView hobbyImageView;
+
+        if (view == null) {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.profile_hobby_item, viewGroup, false);
+
+            hobbyTextView = (TextView) view.findViewById(R.id.hobbyText);
+            hobbyImageView = (ImageView) view.findViewById(R.id.hobbyImage);
+
+            String hobbyName = hobbyArrayList.get(position).getHobbyName();
+            hobbyName = hobbyName.substring(0,1).toUpperCase() + hobbyName.substring(1);
+            hobbyTextView.setText(hobbyName);
+            hobbyImageView.setImageResource(hobbyArrayList.get(position).getHobbyImg());
+        }
+
+        return view;
+    }
+
+}

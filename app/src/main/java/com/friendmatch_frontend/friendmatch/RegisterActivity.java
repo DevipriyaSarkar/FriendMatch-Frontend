@@ -30,12 +30,17 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.friendmatch_frontend.friendmatch.AppController.LOCAL_IP_ADDRESS;
 
 
 /**
@@ -207,7 +212,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void registerUser(final String mName, final String mEmail, final String mPassword) throws MalformedURLException,
             URISyntaxException {
 
-        String urlString = "http://192.168.1.107:5000/sign_up?inputName=" + mName
+        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/sign_up?inputName=" + mName
                 + "&inputEmail=" + mEmail + "&inputPassword=" + mPassword;
 
         // URL encode the string
@@ -216,6 +221,11 @@ public class RegisterActivity extends AppCompatActivity {
                 url.getPath(), url.getQuery(), url.getRef());
 
         urlString = uri.toASCIIString();
+
+        // handle cookies
+        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
+                CookiePolicy.ACCEPT_ALL);
+        CookieHandler.setDefault(cookieManager);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlString, null,
@@ -256,7 +266,7 @@ public class RegisterActivity extends AppCompatActivity {
                             e.printStackTrace();
                             Log.d(TAG, "JSON Error: " + e.getMessage());
                             showProgress(false);
-                            Toast.makeText(RegisterActivity.this, R.string.validate_login_error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -264,9 +274,9 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
                 showProgress(false);
-                Toast.makeText(RegisterActivity.this, R.string.validate_login_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
             }
         }) {
 

@@ -41,6 +41,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -51,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static com.friendmatch_frontend.friendmatch.AppController.LOCAL_IP_ADDRESS;
 
 /**
  * A login screen that offers login via email/password.
@@ -97,6 +101,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(mPasswordView.getWindowToken(), 0);
                 attemptLogin();
             }
         });
@@ -217,8 +223,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(new View(getApplicationContext()).getWindowToken(), 0);
             showProgress(true);
             try {
                 validateUser(email, password);
@@ -310,7 +314,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
+                new ArrayAdapter<>(getApplicationContext(),
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
@@ -333,7 +337,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public void validateUser(final String mEmail, final String mPassword) throws MalformedURLException, URISyntaxException {
 
-        String urlString = "http://192.168.1.107:5000/validate_login?inputEmail=" + mEmail + "&inputPassword=" + mPassword;
+        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/validate_login?inputEmail="
+                + mEmail + "&inputPassword=" + mPassword;
 
         // URL encode the string
         URL url= new URL(urlString);
@@ -341,6 +346,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 url.getPath(), url.getQuery(), url.getRef());
 
         urlString = uri.toASCIIString();
+
+        // handle cookies
+        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
+                CookiePolicy.ACCEPT_ALL);
+        CookieHandler.setDefault(cookieManager);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlString, null,
@@ -383,7 +393,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             e.printStackTrace();
                             Log.d(TAG, "JSON Error: " + e.getMessage());
                             showProgress(false);
-                            Toast.makeText(LoginActivity.this, R.string.validate_login_error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -391,9 +401,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
                 showProgress(false);
-                Toast.makeText(LoginActivity.this, R.string.validate_login_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
             }
         }) {
 

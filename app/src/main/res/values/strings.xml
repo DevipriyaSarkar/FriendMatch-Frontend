@@ -20,7 +20,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="validate_login_error">Sorry, we could not connect to our server. Please try later.</string>
+    <string name="network_error">Sorry, we could not connect to our server. Please try later.</string>
     <string name="error_incorrect_credentials">Incorrect credentials</string>
     <string name="action_register">New to Friend Match? Register</string>
     <string name="start_button_text">Let\'s Get Started!</string>
@@ -40,5 +40,17 @@
     <string name="about_message">This is an app made as a part of the DBMS project by Devipriya Sarkar and Namita Roy.
         \nSay hi to us at devipriyasarkar96@gmail.com and namitaroy63@yahoo.com. \uD83D\uDE42</string>
     <string name="about_neutral_button">Sweet!</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="profile_progress_dialog_message">Hang on…\nGetting your details…</string>
+    <string name="info_image_content_desc">User Profile Photo</string>
+    <string name="info_error_text">Could not get profile information.</string>
+    <string name="info_gender_title">Gender:</string>
+    <string name="info_age_title">Age:</string>
+    <string name="info_phone_title">Phone No.:</string>
+    <string name="info_location_title">Location:</string>
+    <string name="info_city_title">City:</string>
+    <string name="hobby_error_text">Could not get the hobbies.</string>
+    <string name="hobby_section_title">Hobbies</string>
+    <string name="info_email_title">E-mail ID:</string>
 
 </resources>

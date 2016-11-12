@@ -1,7 +1,8 @@
 package com.friendmatch_frontend.friendmatch;
 
 import android.content.Context;
-import android.media.Image;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ class FriendGridAdapter extends BaseAdapter {
         ImageView friendImage;
 
         if (view == null) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.profile_friend_item, viewGroup, false);
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.single_friend_item, viewGroup, false);
 
             friendName = (TextView) view.findViewById(R.id.friendName);
             friendImage = (ImageView) view.findViewById(R.id.friendImage);
@@ -54,6 +55,7 @@ class FriendGridAdapter extends BaseAdapter {
             } else {
                 friendImage.setImageResource(R.drawable.female);
             }
+            friendImage.setAdjustViewBounds(true);
         }
 
         return view;

@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FeedFragment extends Fragment {
+public class EventsFragment extends Fragment {
 
 
-    public FeedFragment() {
+    public EventsFragment() {
         // Required empty public constructor
     }
 
@@ -19,7 +19,7 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_feed, container, false);
+        return inflater.inflate(R.layout.fragment_events, container, false);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.friendmatch_frontend.friendmatch;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,7 @@ class HobbyGridAdapter extends BaseAdapter {
         ImageView hobbyImageView;
 
         if (view == null) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.profile_hobby_item, viewGroup, false);
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.single_hobby_item, viewGroup, false);
 
             hobbyTextView = (TextView) view.findViewById(R.id.hobbyText);
             hobbyImageView = (ImageView) view.findViewById(R.id.hobbyImage);
@@ -51,6 +50,7 @@ class HobbyGridAdapter extends BaseAdapter {
             hobbyName = hobbyName.substring(0,1).toUpperCase() + hobbyName.substring(1);
             hobbyTextView.setText(hobbyName);
             hobbyImageView.setImageResource(hobbyArrayList.get(position).getHobbyImg());
+            hobbyImageView.setAdjustViewBounds(true);
         }
 
         return view;

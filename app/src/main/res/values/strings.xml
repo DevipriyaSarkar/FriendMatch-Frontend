@@ -7,8 +7,8 @@
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment1">Hello feed fragment</string>
-    <string name="hello_blank_fragment2">Hello friends fragment</string>
+    <string name="hello_blank_fragment1">Hello friends fragment</string>
+    <string name="hello_blank_fragment2">Hello events fragment</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -58,5 +58,7 @@
     <string name="hobby_image_content_desc">Hobby Image</string>
     <string name="default_nav_user_name">User Name</string>
     <string name="default_nav_user_email">abc@example.com</string>
+    <string name="suggestion_section_title">Suggested Friends</string>
+    <string name="suggestion_progress_dialog_message">Suggesting friends for you…</string>
 
 </resources>

@@ -35,12 +35,16 @@
                     android:id="@+id/infoImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/card_padding"
                     android:layout_gravity="center"
                     android:contentDescription="@string/info_image_content_desc" />
                 <TextView
                     android:id="@+id/infoName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textStyle="bold"
+                    android:padding="@dimen/card_padding"
                     android:layout_gravity="center"/>
 
                 <LinearLayout
@@ -51,12 +55,17 @@
                         android:text="@string/info_gender_title"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/card_padding"
+                        android:textSize="18sp" />
                     <TextView
                         android:id="@+id/infoGender"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/card_padding"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -67,12 +76,17 @@
                         android:text="@string/info_age_title"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/card_padding"
+                        android:textSize="18sp"/>
                     <TextView
                         android:id="@+id/infoAge"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/card_padding"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -83,12 +97,17 @@
                         android:text="@string/info_email_title"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/card_padding"
+                        android:textSize="18sp" />
                     <TextView
                         android:id="@+id/infoEmail"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/card_padding"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -99,12 +118,17 @@
                         android:text="@string/info_phone_title"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/card_padding"
+                        android:textSize="18sp" />
                     <TextView
                         android:id="@+id/infoPhone"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/card_padding"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -115,12 +139,17 @@
                         android:text="@string/info_location_title"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/card_padding"
+                        android:textSize="18sp" />
                     <TextView
                         android:id="@+id/infoLocation"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/card_padding"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -131,12 +160,17 @@
                         android:text="@string/info_city_title"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/card_padding"
+                        android:textSize="18sp" />
                     <TextView
                         android:id="@+id/infoCity"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/card_padding"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -146,6 +180,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
+                android:padding="@dimen/card_padding"
                 android:text="@string/info_error_text"/>
 
         </android.support.v7.widget.CardView>

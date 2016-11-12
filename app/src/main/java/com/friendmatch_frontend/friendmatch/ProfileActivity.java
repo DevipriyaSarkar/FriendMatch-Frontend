@@ -3,11 +3,13 @@ package com.friendmatch_frontend.friendmatch;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
@@ -54,7 +56,6 @@ public class ProfileActivity extends AppCompatActivity {
         pDialog.setCancelable(false);
 
         getUserProfile();
-
     }
 
     /**
@@ -162,8 +163,11 @@ public class ProfileActivity extends AppCompatActivity {
             infoGender.setText(gender);
             infoAge.setText(info.getString("age"));
             infoEmail.setText(info.getString("user_email"));
+            Linkify.addLinks(infoEmail, Linkify.EMAIL_ADDRESSES);
             infoPhone.setText(info.getString("phone_number"));
+            Linkify.addLinks(infoPhone, Linkify.PHONE_NUMBERS);
             infoLocation.setText(info.getString("location"));
+            Linkify.addLinks(infoLocation, Linkify.MAP_ADDRESSES);
             infoCity.setText(info.getString("city"));
 
         } else {
@@ -190,9 +194,10 @@ public class ProfileActivity extends AppCompatActivity {
                 hobbyArrayList.add(h);
             }
 
-            GridView hobbyGrid = (GridView) findViewById(R.id.hobbyGrid);
+            ExpandableHeightGridView hobbyGrid = (ExpandableHeightGridView) findViewById(R.id.hobbyGrid);
             HobbyGridAdapter hobbyGridAdapter = new HobbyGridAdapter(getApplicationContext(), hobbyArrayList);
             hobbyGrid.setAdapter(hobbyGridAdapter);
+            hobbyGrid.setExpanded(true);
 
         } else {
             hobbyLayout.setVisibility(View.GONE);
@@ -219,9 +224,10 @@ public class ProfileActivity extends AppCompatActivity {
                 friendArrayList.add(user);
             }
 
-            GridView friendGrid = (GridView) findViewById(R.id.friendGrid);
+            ExpandableHeightGridView friendGrid = (ExpandableHeightGridView) findViewById(R.id.friendGrid);
             FriendGridAdapter friendGridAdapter = new FriendGridAdapter(getApplicationContext(), friendArrayList);
             friendGrid.setAdapter(friendGridAdapter);
+            friendGrid.setExpanded(true);
 
         } else {
             friendLayout.setVisibility(View.GONE);
@@ -246,15 +252,17 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void showpDialog() {
-        if (!pDialog.isShowing())
+        if (!pDialog.isShowing()) {
             activity_profile.setVisibility(View.GONE);
             pDialog.show();
+        }
     }
 
     private void hidepDialog() {
-        if (pDialog.isShowing())
+        if (pDialog.isShowing()) {
             activity_profile.setVisibility(View.VISIBLE);
             pDialog.dismiss();
+        }
     }
 
 }

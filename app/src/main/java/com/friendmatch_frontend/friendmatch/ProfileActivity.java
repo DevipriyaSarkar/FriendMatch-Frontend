@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,12 +37,15 @@ public class ProfileActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName() ;
     ProgressDialog pDialog;
+    LinearLayout activity_profile;
     int userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        activity_profile = (LinearLayout) findViewById(R.id.activity_profile);
 
         // initialize progress dialog
         pDialog = new ProgressDialog(this);
@@ -171,7 +176,7 @@ public class ProfileActivity extends AppCompatActivity {
         Log.d(TAG, "Code (hobby): " + code);
 
         LinearLayout hobbyLayout = (LinearLayout) findViewById(R.id.hobbyLayout);
-        TextView hobbyError = (TextView) findViewById(R.id.hobbyError);
+        CardView hobbyError = (CardView) findViewById(R.id.hobbyError);
 
         if (code == 200) {
             hobbyLayout.setVisibility(View.VISIBLE);
@@ -220,11 +225,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void showpDialog() {
         if (!pDialog.isShowing())
+            activity_profile.setVisibility(View.GONE);
             pDialog.show();
     }
 
     private void hidepDialog() {
         if (pDialog.isShowing())
+            activity_profile.setVisibility(View.VISIBLE);
             pDialog.dismiss();
     }
 

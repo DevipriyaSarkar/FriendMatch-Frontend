@@ -12,7 +12,7 @@ import java.net.HttpCookie;
 import java.net.URI;
 import java.util.List;
 
-public class PersistentCookieStore implements CookieStore {
+class PersistentCookieStore implements CookieStore {
 
     /**
      * The default preferences string.
@@ -35,7 +35,7 @@ public class PersistentCookieStore implements CookieStore {
     /**
      * @param context The application context
      */
-    public PersistentCookieStore(Context context) {
+    PersistentCookieStore(Context context) {
         // prevent context leaking by getting the application context
         mContext = context.getApplicationContext();
 

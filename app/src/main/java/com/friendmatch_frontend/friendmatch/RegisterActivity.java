@@ -282,7 +282,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("inputName", mName);
                 params.put("inputEmail", mEmail);
                 params.put("inputPassword", mPassword);

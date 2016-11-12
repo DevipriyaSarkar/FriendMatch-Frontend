@@ -3,12 +3,10 @@ package com.friendmatch_frontend.friendmatch;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -33,7 +31,6 @@ public class FriendSuggestionFragment extends Fragment {
 
     private final String TAG = getClass().getSimpleName();
     ProgressDialog pDialog;
-    LinearLayout suggestionLayout;
 
     public FriendSuggestionFragment() {
         // Required empty public constructor
@@ -55,10 +52,7 @@ public class FriendSuggestionFragment extends Fragment {
 
     public void getFriendSuggestion(final ViewGroup container) {
 
-        showpDialog();
-
-        final CardView friendError = (CardView) container.findViewById(R.id.friendError);
-        suggestionLayout = (LinearLayout) container.findViewById(R.id.suggestionLayout);
+        showProgressDialog();
 
         String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/suggest/friends";
 
@@ -96,16 +90,16 @@ public class FriendSuggestionFragment extends Fragment {
                                 friendGrid.setAdapter(friendGridAdapter);
                                 friendGrid.setExpanded(true);
 
-                                hidepDialog();
+                                hideProgressDialog();
 
                             } else {
-                                hidepDialog();
+                                hideProgressDialog();
                                 Toast.makeText(getContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(TAG, "JSON Error: " + e.getMessage());
-                            hidepDialog();
+                            hideProgressDialog();
                             Toast.makeText(getContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -114,7 +108,7 @@ public class FriendSuggestionFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
-                hidepDialog();
+                hideProgressDialog();
                 Toast.makeText(getContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
             }
         });
@@ -123,13 +117,13 @@ public class FriendSuggestionFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    private void showpDialog() {
+    private void showProgressDialog() {
         if (!pDialog.isShowing()) {
             pDialog.show();
         }
     }
 
-    private void hidepDialog() {
+    private void hideProgressDialog() {
         if (pDialog.isShowing()) {
             pDialog.dismiss();
         }

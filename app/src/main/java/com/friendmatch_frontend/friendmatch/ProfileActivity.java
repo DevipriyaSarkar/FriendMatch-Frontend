@@ -3,7 +3,6 @@ package com.friendmatch_frontend.friendmatch;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -12,7 +11,6 @@ import android.support.v7.widget.CardView;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -63,7 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
      */
     public void getUserProfile() {
 
-        showpDialog();
+        showProgressDialog();
 
         String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/profile";
 
@@ -86,13 +84,13 @@ public class ProfileActivity extends AppCompatActivity {
                                 JSONArray response_array = response.getJSONArray("message");
                                 updateUI(response_array);
                             } else {
-                                hidepDialog();
+                                hideProgressDialog();
                                 Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(TAG, "JSON Error: " + e.getMessage());
-                            hidepDialog();
+                            hideProgressDialog();
                             Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -101,7 +99,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
-                hidepDialog();
+                hideProgressDialog();
                 Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
             }
         });
@@ -122,7 +120,7 @@ public class ProfileActivity extends AppCompatActivity {
         updateFriends(friendsObj);
 
         Log.d(TAG, "Updated UI");
-        hidepDialog();
+        hideProgressDialog();
     }
 
     public void updateInfo(JSONObject infoObj) throws JSONException {
@@ -251,14 +249,14 @@ public class ProfileActivity extends AppCompatActivity {
         imageView.setImageDrawable(roundDrawable);   // round profile picture
     }
 
-    private void showpDialog() {
+    private void showProgressDialog() {
         if (!pDialog.isShowing()) {
             activity_profile.setVisibility(View.GONE);
             pDialog.show();
         }
     }
 
-    private void hidepDialog() {
+    private void hideProgressDialog() {
         if (pDialog.isShowing()) {
             activity_profile.setVisibility(View.VISIBLE);
             pDialog.dismiss();

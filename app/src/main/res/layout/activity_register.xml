@@ -87,7 +87,7 @@
                 android:layout_marginTop="@dimen/login_widget_margin"
                 android:text="@string/action_sign_up"
                 android:textStyle="bold"
-                android:background="@color/colorAccentLight"
+                android:background="@color/colorAccent"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>

@@ -29,7 +29,7 @@
         <Button
             android:text="@string/start_button_text"
             android:textAppearance="?android:textAppearanceMedium"
-            android:background="@color/colorAccentLight"
+            android:background="@color/colorAccent"
             android:textColor="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

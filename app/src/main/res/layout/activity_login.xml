@@ -71,7 +71,7 @@
                 android:layout_marginTop="@dimen/login_widget_margin"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold"
-                android:background="@color/colorAccentLight"
+                android:background="@color/colorAccent"
                 android:textColor="@android:color/white"/>
 
             <Button
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/login_widget_margin"
                 android:text="@string/action_register"
-                android:background="@color/colorAccentLight"
+                android:background="@color/colorAccent"
                 android:textColor="@android:color/white"
                 />
 

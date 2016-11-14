@@ -4,7 +4,8 @@ class Hobby {
     private String hobbyName;
     private int hobbyImg;
 
-    public Hobby() {}
+    public Hobby() {
+    }
 
     Hobby(String hobbyName, int hobbyImg) {
         this.hobbyName = hobbyName;

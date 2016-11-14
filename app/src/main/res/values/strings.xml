@@ -41,14 +41,14 @@
     <string name="profile_progress_dialog_message">Hang on…\nGetting your details…</string>
     <string name="info_image_content_desc">User Profile Photo</string>
     <string name="info_error_text">Could not get profile information.</string>
-    <string name="info_gender_title">Gender:</string>
-    <string name="info_age_title">Age:</string>
-    <string name="info_phone_title">Phone No.:</string>
-    <string name="info_location_title">Location:</string>
-    <string name="info_city_title">City:</string>
+    <string name="info_gender_title">Gender</string>
+    <string name="info_age_title">Age</string>
+    <string name="info_phone_title">Phone No.</string>
+    <string name="info_location_title">Location</string>
+    <string name="info_city_title">City</string>
     <string name="hobby_error_text">Could not get the hobbies.</string>
     <string name="hobby_section_title">Hobbies</string>
-    <string name="info_email_title">E-mail ID:</string>
+    <string name="info_email_title">E-mail ID</string>
     <string name="friends_section_title">Friends</string>
     <string name="friend_error_text">Could not get the friend list.</string>
     <string name="friend_image_content_desc">Friend Profile Picture</string>
@@ -57,5 +57,14 @@
     <string name="default_nav_user_email">abc@example.com</string>
     <string name="suggestion_section_title">Suggested Friends</string>
     <string name="suggestion_progress_dialog_message">Suggesting friends for you…</string>
+    <string name="user_profile_image_content_desc">User Profile Picture</string>
+    <string name="hobby_empty_error">Oops. Hobby list empty.</string>
+    <string name="friend_empty_error">Oops. Friend list empty.</string>
+    <string name="mutual_hobby_section_heading">Mutual Hobbies</string>
+    <string name="all_hobby_section_heading">All Hobbies</string>
+    <string name="all_friends_section_heading">All Friends</string>
+    <string name="user_profile_prog_dialog_msg1">Loading</string>
+    <string name="user_profile_prog_dialog_msg2">\'s profile</string>
+    <string name="common_hobby_empty_error">Oops. No common hobbies.</string>
 
 </resources>

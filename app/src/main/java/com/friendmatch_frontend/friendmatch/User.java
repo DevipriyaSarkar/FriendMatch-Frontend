@@ -5,12 +5,13 @@ class User {
     private String name;
     private String gender;
 
-    User() {}
+    User() {
+    }
 
     User(int id, String name, String gender) {
         this.id = id;
         this.name = name;
-        this.gender = (gender.equals("M")) ? "Male" : "Female" ;
+        this.gender = (gender.equals("M")) ? "Male" : "Female";
     }
 
     public void setId(int id) {

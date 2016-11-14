@@ -61,7 +61,7 @@ import static com.friendmatch_frontend.friendmatch.AppController.LOCAL_IP_ADDRES
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    private final String TAG =  this.getClass().getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
     private static int LOGGED_IN = 0;
 
     /**
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(mPasswordView.getWindowToken(), 0);
                 attemptLogin();
             }
@@ -341,7 +341,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 + mEmail + "&inputPassword=" + mPassword;
 
         // URL encode the string
-        URL url= new URL(urlString);
+        URL url = new URL(urlString);
         URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(),
                 url.getPath(), url.getQuery(), url.getRef());
 

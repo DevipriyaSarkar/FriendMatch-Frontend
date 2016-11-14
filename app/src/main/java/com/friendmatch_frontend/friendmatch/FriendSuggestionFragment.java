@@ -1,12 +1,14 @@
 package com.friendmatch_frontend.friendmatch;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -74,7 +76,7 @@ public class FriendSuggestionFragment extends Fragment {
 
                             if (code == 200) {
                                 JSONArray friendJSONArray = (response.getJSONObject("message")).getJSONArray("suggestions");
-                                ArrayList<User> friendArrayList = new ArrayList<>();
+                                final ArrayList<User> friendArrayList = new ArrayList<>();
 
                                 for (int i = 0; i < friendJSONArray.length(); i++) {
                                     JSONObject friend = friendJSONArray.getJSONObject(i);
@@ -89,6 +91,22 @@ public class FriendSuggestionFragment extends Fragment {
                                         new FriendGridAdapter(getContext(), friendArrayList);
                                 friendGrid.setAdapter(friendGridAdapter);
                                 friendGrid.setExpanded(true);
+
+                                friendGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                                        int friendID = friendArrayList.get(position).getId();
+                                        String friendName = friendArrayList.get(position).getName();
+                                        String friendGender = friendArrayList.get(position).getGender();
+                                        Intent intent = new Intent(view.getContext(), UserActivity.class);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putInt("FRIEND_ID", friendID);
+                                        bundle.putString("FRIEND_NAME", friendName);
+                                        bundle.putString("FRIEND_GENDER", friendGender);
+                                        intent.putExtras(bundle);
+                                        startActivity(intent);
+                                    }
+                                });
 
                                 hideProgressDialog();
 

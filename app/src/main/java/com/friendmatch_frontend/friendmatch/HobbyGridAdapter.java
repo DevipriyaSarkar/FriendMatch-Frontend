@@ -47,7 +47,7 @@ class HobbyGridAdapter extends BaseAdapter {
             hobbyImageView = (ImageView) view.findViewById(R.id.hobbyImage);
 
             String hobbyName = hobbyArrayList.get(position).getHobbyName();
-            hobbyName = hobbyName.substring(0,1).toUpperCase() + hobbyName.substring(1);
+            hobbyName = hobbyName.substring(0, 1).toUpperCase() + hobbyName.substring(1);
             hobbyTextView.setText(hobbyName);
             hobbyImageView.setImageResource(hobbyArrayList.get(position).getHobbyImg());
             hobbyImageView.setAdjustViewBounds(true);

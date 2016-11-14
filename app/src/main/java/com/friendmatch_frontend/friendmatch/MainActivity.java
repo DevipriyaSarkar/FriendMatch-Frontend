@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
 
+        pageIcon.recycle();
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -107,8 +109,6 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_settings) {
-
         } else if (id == R.id.nav_share) {
 
             // share the app with others
@@ -136,8 +136,8 @@ public class MainActivity extends AppCompatActivity
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
             // make emails clickable
-            ((TextView)alertDialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-            ((TextView)alertDialog.findViewById(android.R.id.message)).setLineSpacing(0.0f, 1.3f);
+            ((TextView) alertDialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+            ((TextView) alertDialog.findViewById(android.R.id.message)).setLineSpacing(0.0f, 1.3f);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updateNavUI(String userName, String userEmail, String userGender) {
-        View headerView =  navigationView.getHeaderView(0);
+        View headerView = navigationView.getHeaderView(0);
 
         TextView navUserName = (TextView) headerView.findViewById(R.id.nav_user_name);
         TextView navUserEmail = (TextView) headerView.findViewById(R.id.nav_user_email);

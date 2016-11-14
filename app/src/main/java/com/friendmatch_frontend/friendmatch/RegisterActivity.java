@@ -48,7 +48,7 @@ import static com.friendmatch_frontend.friendmatch.AppController.LOCAL_IP_ADDRES
  */
 public class RegisterActivity extends AppCompatActivity {
 
-    private final String TAG =  this.getClass().getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
     private SharedPreferences sharedPref;
 
     // UI references.
@@ -216,7 +216,7 @@ public class RegisterActivity extends AppCompatActivity {
                 + "&inputEmail=" + mEmail + "&inputPassword=" + mPassword;
 
         // URL encode the string
-        URL url= new URL(urlString);
+        URL url = new URL(urlString);
         URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(),
                 url.getPath(), url.getQuery(), url.getRef());
 

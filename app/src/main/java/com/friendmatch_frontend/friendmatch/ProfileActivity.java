@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -36,7 +36,7 @@ import static com.friendmatch_frontend.friendmatch.AppController.LOCAL_IP_ADDRES
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private final String TAG = this.getClass().getSimpleName() ;
+    private final String TAG = this.getClass().getSimpleName();
     ProgressDialog pDialog;
     ScrollView activity_profile;
     int userID;
@@ -179,23 +179,36 @@ public class ProfileActivity extends AppCompatActivity {
         Log.d(TAG, "Code (hobby): " + code);
 
         LinearLayout hobbyLayout = (LinearLayout) findViewById(R.id.hobbyLayout);
-        CardView hobbyError = (CardView) findViewById(R.id.hobbyError);
+        TextView hobbyError = (TextView) findViewById(R.id.hobbyError);
 
         if (code == 200) {
             hobbyLayout.setVisibility(View.VISIBLE);
             hobbyError.setVisibility(View.GONE);
 
-            ArrayList<Hobby> hobbyArrayList = new ArrayList<>();
+            final ArrayList<Hobby> hobbyArrayList = new ArrayList<>();
             JSONArray hobbyJSONArray = hobbyObj.getJSONArray("hobby");
             for (int i = 0; i < hobbyJSONArray.length(); i++) {
                 Hobby h = new Hobby(hobbyJSONArray.get(i).toString(), R.drawable.hobby);
                 hobbyArrayList.add(h);
             }
 
+            if (hobbyArrayList.isEmpty()) {
+                hobbyError.setVisibility(View.VISIBLE);
+                hobbyError.setText(R.string.hobby_empty_error);
+            }
+
             ExpandableHeightGridView hobbyGrid = (ExpandableHeightGridView) findViewById(R.id.hobbyGrid);
             HobbyGridAdapter hobbyGridAdapter = new HobbyGridAdapter(getApplicationContext(), hobbyArrayList);
             hobbyGrid.setAdapter(hobbyGridAdapter);
             hobbyGrid.setExpanded(true);
+            hobbyGrid.setEmptyView(hobbyError);
+
+            hobbyGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                }
+            });
 
         } else {
             hobbyLayout.setVisibility(View.GONE);
@@ -208,7 +221,7 @@ public class ProfileActivity extends AppCompatActivity {
         Log.d(TAG, "Code (friends): " + code);
 
         LinearLayout friendLayout = (LinearLayout) findViewById(R.id.friendLayout);
-        CardView friendError = (CardView) findViewById(R.id.friendError);
+        TextView friendError = (TextView) findViewById(R.id.friendError);
 
         if (code == 200) {
             friendLayout.setVisibility(View.VISIBLE);
@@ -222,10 +235,16 @@ public class ProfileActivity extends AppCompatActivity {
                 friendArrayList.add(user);
             }
 
+            if (friendArrayList.isEmpty()) {
+                friendError.setVisibility(View.VISIBLE);
+                friendError.setText(R.string.friend_empty_error);
+            }
+
             ExpandableHeightGridView friendGrid = (ExpandableHeightGridView) findViewById(R.id.friendGrid);
             FriendGridAdapter friendGridAdapter = new FriendGridAdapter(getApplicationContext(), friendArrayList);
             friendGrid.setAdapter(friendGridAdapter);
             friendGrid.setExpanded(true);
+            friendGrid.setEmptyView(friendError);
 
         } else {
             friendLayout.setVisibility(View.GONE);

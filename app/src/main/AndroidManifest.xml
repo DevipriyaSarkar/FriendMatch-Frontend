@@ -42,12 +42,14 @@
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity">
-            </meta-data>
+                android:value=".MainActivity"></meta-data>
         </activity>
+        <activity
+            android:name=".UserActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

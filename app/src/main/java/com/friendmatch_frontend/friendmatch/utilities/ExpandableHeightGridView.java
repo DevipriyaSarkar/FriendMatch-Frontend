@@ -1,4 +1,4 @@
-package com.friendmatch_frontend.friendmatch;
+package com.friendmatch_frontend.friendmatch.utilities;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,6 +1,6 @@
-package com.friendmatch_frontend.friendmatch;
+package com.friendmatch_frontend.friendmatch.models;
 
-class Hobby {
+public class Hobby {
     private int hobbyID;
     private String hobbyName;
     private int hobbyImg;
@@ -8,7 +8,7 @@ class Hobby {
     public Hobby() {
     }
 
-    Hobby(int hobbyID, String hobbyName, int hobbyImg) {
+    public Hobby(int hobbyID, String hobbyName, int hobbyImg) {
         this.hobbyID = hobbyID;
         this.hobbyName = hobbyName;
         this.hobbyImg = hobbyImg;

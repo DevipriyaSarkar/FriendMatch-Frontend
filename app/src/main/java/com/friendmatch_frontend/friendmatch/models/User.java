@@ -1,14 +1,14 @@
-package com.friendmatch_frontend.friendmatch;
+package com.friendmatch_frontend.friendmatch.models;
 
-class User {
+public class User {
     private int id;
     private String name;
     private String gender;
 
-    User() {
+    public User() {
     }
 
-    User(int id, String name, String gender) {
+    public User(int id, String name, String gender) {
         this.id = id;
         this.name = name;
         this.gender = (gender.equals("M")) ? "Male" : "Female";

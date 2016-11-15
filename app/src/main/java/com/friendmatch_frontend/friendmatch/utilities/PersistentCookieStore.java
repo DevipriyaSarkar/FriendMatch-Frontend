@@ -1,4 +1,4 @@
-package com.friendmatch_frontend.friendmatch;
+package com.friendmatch_frontend.friendmatch.utilities;
 
 
 import android.content.Context;
@@ -12,7 +12,7 @@ import java.net.HttpCookie;
 import java.net.URI;
 import java.util.List;
 
-class PersistentCookieStore implements CookieStore {
+public class PersistentCookieStore implements CookieStore {
 
     /**
      * The default preferences string.
@@ -35,7 +35,7 @@ class PersistentCookieStore implements CookieStore {
     /**
      * @param context The application context
      */
-    PersistentCookieStore(Context context) {
+    public PersistentCookieStore(Context context) {
         // prevent context leaking by getting the application context
         mContext = context.getApplicationContext();
 

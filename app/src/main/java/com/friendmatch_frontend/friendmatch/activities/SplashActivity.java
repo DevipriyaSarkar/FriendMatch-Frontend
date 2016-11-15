@@ -1,4 +1,4 @@
-package com.friendmatch_frontend.friendmatch;
+package com.friendmatch_frontend.friendmatch.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
+import com.friendmatch_frontend.friendmatch.R;
 
 public class SplashActivity extends AppCompatActivity {
 

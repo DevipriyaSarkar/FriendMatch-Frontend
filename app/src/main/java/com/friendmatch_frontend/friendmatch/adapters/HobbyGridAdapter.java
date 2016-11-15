@@ -1,4 +1,4 @@
-package com.friendmatch_frontend.friendmatch;
+package com.friendmatch_frontend.friendmatch.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,15 +8,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.friendmatch_frontend.friendmatch.R;
+import com.friendmatch_frontend.friendmatch.models.Hobby;
+
 import java.util.ArrayList;
 
 
-class HobbyGridAdapter extends BaseAdapter {
+public class HobbyGridAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<Hobby> hobbyArrayList;
 
-    HobbyGridAdapter(Context context, ArrayList<Hobby> hobbyArrayList) {
+    public HobbyGridAdapter(Context context, ArrayList<Hobby> hobbyArrayList) {
         this.context = context;
         this.hobbyArrayList = hobbyArrayList;
     }

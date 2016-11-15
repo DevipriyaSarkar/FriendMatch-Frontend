@@ -1,24 +1,26 @@
-package com.friendmatch_frontend.friendmatch;
+package com.friendmatch_frontend.friendmatch.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.friendmatch_frontend.friendmatch.R;
+import com.friendmatch_frontend.friendmatch.models.User;
 
 import java.util.ArrayList;
 
 
-class FriendGridAdapter extends ArrayAdapter<User> {
+public class FriendGridAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<User> friendArrayList;
 
-    FriendGridAdapter(Context context, ArrayList<User> friendArrayList) {
-        super(context, 0, friendArrayList);
+    public FriendGridAdapter(Context context, ArrayList<User> friendArrayList) {
         this.context = context;
         this.friendArrayList = friendArrayList;
     }

@@ -1,4 +1,4 @@
-package com.friendmatch_frontend.friendmatch;
+package com.friendmatch_frontend.friendmatch.application;
 
 import android.app.Application;
 import android.text.TextUtils;

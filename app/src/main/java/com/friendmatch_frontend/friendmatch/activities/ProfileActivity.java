@@ -1,4 +1,4 @@
-package com.friendmatch_frontend.friendmatch;
+package com.friendmatch_frontend.friendmatch.activities;
 
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
@@ -23,6 +23,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.friendmatch_frontend.friendmatch.R;
+import com.friendmatch_frontend.friendmatch.adapters.FriendGridAdapter;
+import com.friendmatch_frontend.friendmatch.adapters.HobbyGridAdapter;
+import com.friendmatch_frontend.friendmatch.application.AppController;
+import com.friendmatch_frontend.friendmatch.models.Hobby;
+import com.friendmatch_frontend.friendmatch.models.User;
+import com.friendmatch_frontend.friendmatch.utilities.ExpandableHeightGridView;
+import com.friendmatch_frontend.friendmatch.utilities.PersistentCookieStore;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +41,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.ArrayList;
 
-import static com.friendmatch_frontend.friendmatch.AppController.LOCAL_IP_ADDRESS;
+import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
 
 public class ProfileActivity extends AppCompatActivity {
 

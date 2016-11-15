@@ -1,4 +1,4 @@
-package com.friendmatch_frontend.friendmatch;
+package com.friendmatch_frontend.friendmatch.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -37,6 +37,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.friendmatch_frontend.friendmatch.R;
+import com.friendmatch_frontend.friendmatch.application.AppController;
+import com.friendmatch_frontend.friendmatch.utilities.PersistentCookieStore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +57,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.Manifest.permission.READ_CONTACTS;
-import static com.friendmatch_frontend.friendmatch.AppController.LOCAL_IP_ADDRESS;
+import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
 
 /**
  * A login screen that offers login via email/password.

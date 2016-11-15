@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLight"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.friendmatch_frontend.friendmatch.UserActivity"
+    tools:context="com.friendmatch_frontend.friendmatch.activities.UserActivity"
     tools:showIn="@layout/activity_user">
 
     <LinearLayout

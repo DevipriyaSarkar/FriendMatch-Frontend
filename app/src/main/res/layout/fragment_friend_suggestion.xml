@@ -6,7 +6,7 @@
     android:fillViewport="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.friendmatch_frontend.friendmatch.FriendSuggestionFragment" >
+    tools:context="com.friendmatch_frontend.friendmatch.activities.FriendSuggestionFragment" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 android:textStyle="bold"
                 android:text="@string/suggestion_section_title" />
 
-            <com.friendmatch_frontend.friendmatch.ExpandableHeightGridView
+            <com.friendmatch_frontend.friendmatch.utilities.ExpandableHeightGridView
                 android:id="@+id/friendGrid"
                 android:numColumns="auto_fit"
                 android:isScrollContainer="false"
@@ -38,7 +38,7 @@
                 android:verticalSpacing="@dimen/friend_grid_spacing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-            </com.friendmatch_frontend.friendmatch.ExpandableHeightGridView>
+            </com.friendmatch_frontend.friendmatch.utilities.ExpandableHeightGridView>
 
         </LinearLayout>
 

@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.friendmatch_frontend.friendmatch.ProfileActivity" >
+    tools:context="com.friendmatch_frontend.friendmatch.activities.ProfileActivity" >
 
     <LinearLayout
         android:id="@+id/friendLayout"
@@ -26,7 +26,7 @@
             android:id="@+id/friendsSectionHeading"
             android:text="@string/friends_section_title" />
 
-        <com.friendmatch_frontend.friendmatch.ExpandableHeightGridView
+        <com.friendmatch_frontend.friendmatch.utilities.ExpandableHeightGridView
             android:id="@+id/friendGrid"
             android:numColumns="auto_fit"
             android:isScrollContainer="false"
@@ -34,7 +34,7 @@
             android:verticalSpacing="@dimen/friend_grid_spacing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-        </com.friendmatch_frontend.friendmatch.ExpandableHeightGridView>
+        </com.friendmatch_frontend.friendmatch.utilities.ExpandableHeightGridView>
 
     </LinearLayout>
 

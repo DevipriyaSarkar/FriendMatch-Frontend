@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context="com.friendmatch_frontend.friendmatch.ProfileActivity" >
+    tools:context="com.friendmatch_frontend.friendmatch.activities.ProfileActivity" >
 
     <LinearLayout
         android:orientation="vertical"

@@ -226,7 +226,8 @@ public class UserActivity extends AppCompatActivity {
                                 ArrayList<Hobby> hobbyArrayList = new ArrayList<>();
 
                                 for (int i = 0; i < hobbyJSONArray.length(); i++) {
-                                    Hobby h = new Hobby(hobbyJSONArray.get(i).toString(), R.drawable.hobby);
+                                    JSONObject hobby = hobbyJSONArray.getJSONObject(i);
+                                    Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"), R.drawable.hobby);
                                     hobbyArrayList.add(h);
                                 }
 
@@ -311,7 +312,8 @@ public class UserActivity extends AppCompatActivity {
                                 ArrayList<Hobby> hobbyArrayList = new ArrayList<>();
 
                                 for (int i = 0; i < hobbyJSONArray.length(); i++) {
-                                    Hobby h = new Hobby(hobbyJSONArray.get(i).toString(), R.drawable.hobby);
+                                    JSONObject hobby = hobbyJSONArray.getJSONObject(i);
+                                    Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"), R.drawable.hobby);
                                     hobbyArrayList.add(h);
                                 }
 

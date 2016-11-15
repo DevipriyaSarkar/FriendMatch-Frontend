@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -46,6 +47,7 @@ public class UserActivity extends AppCompatActivity {
     CollapsingToolbarLayout toolbarLayout;
     View commonHobbyView, allHobbyView, allFriendsView;
     TextView commonHobbyHeading, allHobbyHeading, allFriendsHeading;
+    static final int SOCKET_TIMEOUT_MS = 5000;
     int friendID;   // user ID of the clicked friend/user
     String friendName, friendGender;
     int count = 0;  // count of the number of async tasks completed
@@ -105,13 +107,7 @@ public class UserActivity extends AppCompatActivity {
                 getString(R.string.user_profile_prog_dialog_msg2));
         pDialog.setCancelable(false);
 
-        showProgressDialog();
-
-        // fetch all the data
-        getUserInfo();
-        getCommonHobbies();
-        getAllHobbies();
-        getAllFriends();
+        getUserProfile();
 
         FloatingActionButton addFriendFAB = (FloatingActionButton) findViewById(R.id.addFriendFAB);
         addFriendFAB.setOnClickListener(new View.OnClickListener() {
@@ -123,325 +119,230 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
-    public void getUserInfo() {
+    public void getUserProfile() {
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/" + friendID + "/info";
+        showProgressDialog();
+
+        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/" + friendID + "/profile";
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
                 CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        JsonObjectRequest profObjRequest = new JsonObjectRequest(Request.Method.GET,
                 urlString, null,
                 new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, response.toString());
-                        count++;
                         try {
                             int code = response.getInt("code");
-                            Log.d(TAG, "Code: " + code);
-
+                            Log.d(TAG, "Code (message): " + code);
                             if (code == 200) {
-
-                                // UI references
-                                TextView infoGender = (TextView) findViewById(R.id.infoGender);
-                                TextView infoAge = (TextView) findViewById(R.id.infoAge);
-                                TextView infoEmail = (TextView) findViewById(R.id.infoEmail);
-                                TextView infoPhone = (TextView) findViewById(R.id.infoPhone);
-                                TextView infoLocation = (TextView) findViewById(R.id.infoLocation);
-                                TextView infoCity = (TextView) findViewById(R.id.infoCity);
-
-                                JSONObject info = (response.getJSONObject("message")).getJSONObject("info");
-
-                                // set data
-                                infoGender.setText(friendGender);
-                                infoAge.setText(info.getString("age"));
-                                infoEmail.setText(info.getString("user_email"));
-                                Linkify.addLinks(infoEmail, Linkify.EMAIL_ADDRESSES);
-                                infoPhone.setText(info.getString("phone_number"));
-                                Linkify.addLinks(infoPhone, Linkify.PHONE_NUMBERS);
-                                infoLocation.setText(info.getString("location"));
-                                Linkify.addLinks(infoLocation, Linkify.MAP_ADDRESSES);
-                                infoCity.setText(info.getString("city"));
-
+                                JSONArray response_array = response.getJSONArray("message");
+                                updateUI(response_array);
                             } else {
+                                hideProgressDialog();
                                 Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(TAG, "JSON Error: " + e.getMessage());
+                            hideProgressDialog();
                             Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
                         }
-                        hideProgressDialog();
                     }
                 }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                count++;
-                hideProgressDialog();
                 VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
+                hideProgressDialog();
                 Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
             }
         });
 
+        //Set a retry policy in case of SocketTimeout & ConnectionTimeout Exceptions.
+        //Volley does retry for you if you have specified the policy.
+        profObjRequest.setRetryPolicy(new DefaultRetryPolicy(SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
-
+        AppController.getInstance().addToRequestQueue(profObjRequest);
     }
 
-    public void getCommonHobbies() {
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/common/hobby/" + friendID;
+    public void updateUI(JSONArray response) throws JSONException {
+        JSONObject infoObj, friendsObj, allHobbyObj, commonHobbyObj;
 
-        // handle cookies
-        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
-                CookiePolicy.ACCEPT_ALL);
-        CookieHandler.setDefault(cookieManager);
+        infoObj = response.getJSONObject(0);
+        friendsObj = response.getJSONObject(1);
+        allHobbyObj = response.getJSONObject(2);
+        commonHobbyObj = response.getJSONObject(3);
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                urlString, null,
-                new Response.Listener<JSONObject>() {
+        updateInfo(infoObj);
+        updateCommonHobby(commonHobbyObj);
+        updateAllHobby(allHobbyObj);
+        updateFriends(friendsObj);
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, response.toString());
-                        count++;
-                        try {
-                            int code = response.getInt("code");
-                            Log.d(TAG, "Code: " + code);
-
-                            LinearLayout hobbyLayout = (LinearLayout) commonHobbyView.findViewById(R.id.hobbyLayout);
-                            TextView hobbyError = (TextView) commonHobbyView.findViewById(R.id.hobbyError);
-
-                            if (code == 200) {
-
-                                hobbyLayout.setVisibility(View.VISIBLE);
-                                hobbyError.setVisibility(View.GONE);
-
-                                JSONArray hobbyJSONArray = (response.getJSONObject("message")).getJSONArray("common_hobby");
-                                ArrayList<Hobby> hobbyArrayList = new ArrayList<>();
-
-                                for (int i = 0; i < hobbyJSONArray.length(); i++) {
-                                    JSONObject hobby = hobbyJSONArray.getJSONObject(i);
-                                    Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"), R.drawable.hobby);
-                                    hobbyArrayList.add(h);
-                                }
-
-                                if (hobbyArrayList.isEmpty()) {
-                                    hobbyError.setVisibility(View.VISIBLE);
-                                    hobbyError.setText(R.string.common_hobby_empty_error);
-                                }
-
-                                ExpandableHeightGridView hobbyGrid =
-                                        (ExpandableHeightGridView) commonHobbyView.findViewById(R.id.hobbyGrid);
-                                HobbyGridAdapter hobbyGridAdapter = new HobbyGridAdapter(getApplicationContext(),
-                                        hobbyArrayList);
-                                hobbyGrid.setAdapter(hobbyGridAdapter);
-                                hobbyGrid.setExpanded(true);
-                                hobbyGrid.setEmptyView(hobbyError);
-
-                                hobbyGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                                    }
-                                });
-
-                            } else {
-                                hobbyLayout.setVisibility(View.GONE);
-                                hobbyError.setVisibility(View.VISIBLE);
-                                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d(TAG, "JSON Error: " + e.getMessage());
-                            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
-                        }
-                        hideProgressDialog();
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                count++;
-                hideProgressDialog();
-                VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
-                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
-
+        Log.d(TAG, "Updated UI");
+        hideProgressDialog();
     }
 
-    public void getAllHobbies() {
+    public void updateInfo(JSONObject infoObj) throws JSONException {
+        int code = infoObj.getInt("code");
+        Log.d(TAG, "Code (info): " + code);
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/" + friendID + "/hobby";
 
-        // handle cookies
-        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
-                CookiePolicy.ACCEPT_ALL);
-        CookieHandler.setDefault(cookieManager);
+        if (code == 200) {
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                urlString, null,
-                new Response.Listener<JSONObject>() {
+            // UI references
+            TextView infoGender = (TextView) findViewById(R.id.infoGender);
+            TextView infoAge = (TextView) findViewById(R.id.infoAge);
+            TextView infoEmail = (TextView) findViewById(R.id.infoEmail);
+            TextView infoPhone = (TextView) findViewById(R.id.infoPhone);
+            TextView infoLocation = (TextView) findViewById(R.id.infoLocation);
+            TextView infoCity = (TextView) findViewById(R.id.infoCity);
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, response.toString());
-                        count++;
-                        try {
-                            int code = response.getInt("code");
-                            Log.d(TAG, "Code: " + code);
+            // extract data
+            JSONObject info = infoObj.getJSONObject("info");
 
-                            LinearLayout hobbyLayout = (LinearLayout) allHobbyView.findViewById(R.id.hobbyLayout);
-                            TextView hobbyError = (TextView) allHobbyView.findViewById(R.id.hobbyError);
+            // set data
+            infoGender.setText(friendGender);
+            infoAge.setText(info.getString("age"));
+            infoEmail.setText(info.getString("user_email"));
+            Linkify.addLinks(infoEmail, Linkify.EMAIL_ADDRESSES);
+            infoPhone.setText(info.getString("phone_number"));
+            Linkify.addLinks(infoPhone, Linkify.PHONE_NUMBERS);
+            infoLocation.setText(info.getString("location"));
+            Linkify.addLinks(infoLocation, Linkify.MAP_ADDRESSES);
+            infoCity.setText(info.getString("city"));
 
-                            if (code == 200) {
-
-                                hobbyLayout.setVisibility(View.VISIBLE);
-                                hobbyError.setVisibility(View.GONE);
-
-                                JSONArray hobbyJSONArray = (response.getJSONObject("message")).getJSONArray("hobby");
-                                ArrayList<Hobby> hobbyArrayList = new ArrayList<>();
-
-                                for (int i = 0; i < hobbyJSONArray.length(); i++) {
-                                    JSONObject hobby = hobbyJSONArray.getJSONObject(i);
-                                    Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"), R.drawable.hobby);
-                                    hobbyArrayList.add(h);
-                                }
-
-                                if (hobbyArrayList.isEmpty()) {
-                                    hobbyError.setVisibility(View.VISIBLE);
-                                    hobbyError.setText(R.string.hobby_empty_error);
-                                }
-
-                                ExpandableHeightGridView hobbyGrid =
-                                        (ExpandableHeightGridView) allHobbyView.findViewById(R.id.hobbyGrid);
-                                HobbyGridAdapter hobbyGridAdapter = new HobbyGridAdapter(getApplicationContext(),
-                                        hobbyArrayList);
-                                hobbyGrid.setAdapter(hobbyGridAdapter);
-                                hobbyGrid.setExpanded(true);
-                                hobbyGrid.setEmptyView(hobbyError);
-
-                                hobbyGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                                    }
-                                });
-
-                            } else {
-                                hobbyLayout.setVisibility(View.GONE);
-                                hobbyError.setVisibility(View.VISIBLE);
-                                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d(TAG, "JSON Error: " + e.getMessage());
-                            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
-                        }
-                        hideProgressDialog();
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                count++;
-                hideProgressDialog();
-                VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
-                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
-
+        }
     }
 
-    public void getAllFriends() {
+    public void updateCommonHobby(JSONObject commonHobbyObj) throws JSONException {
+        int code = commonHobbyObj.getInt("code");
+        Log.d(TAG, "Code (common hobby): " + code);
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/" + friendID + "/friends";
+        LinearLayout hobbyLayout = (LinearLayout) commonHobbyView.findViewById(R.id.hobbyLayout);
+        TextView hobbyError = (TextView) commonHobbyView.findViewById(R.id.hobbyError);
 
-        // handle cookies
-        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
-                CookiePolicy.ACCEPT_ALL);
-        CookieHandler.setDefault(cookieManager);
+        if (code == 200) {
+            hobbyLayout.setVisibility(View.VISIBLE);
+            hobbyError.setVisibility(View.GONE);
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                urlString, null,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, response.toString());
-                        count++;
-                        try {
-                            int code = response.getInt("code");
-                            Log.d(TAG, "Code: " + code);
-
-                            LinearLayout friendLayout = (LinearLayout) allFriendsView.findViewById(R.id.friendLayout);
-                            TextView friendError = (TextView) allFriendsView.findViewById(R.id.friendError);
-
-                            if (code == 200) {
-
-                                friendLayout.setVisibility(View.VISIBLE);
-                                friendError.setVisibility(View.GONE);
-
-                                JSONArray friendJSONArray = (response.getJSONObject("message")).getJSONArray("friends");
-                                ArrayList<User> friendArrayList = new ArrayList<>();
-
-                                for (int i = 0; i < friendJSONArray.length(); i++) {
-                                    JSONObject friend = friendJSONArray.getJSONObject(i);
-                                    User user = new User(friend.getInt("friend_id"), friend.getString("user_name"),
-                                            friend.getString("gender"));
-                                    friendArrayList.add(user);
-                                }
-
-                                if (friendArrayList.isEmpty()) {
-                                    friendError.setVisibility(View.VISIBLE);
-                                    friendError.setText(R.string.friend_empty_error);
-                                }
-
-                                ExpandableHeightGridView friendGrid =
-                                        (ExpandableHeightGridView) allFriendsView.findViewById(R.id.friendGrid);
-                                FriendGridAdapter friendGridAdapter = new FriendGridAdapter(getApplicationContext(),
-                                        friendArrayList);
-                                friendGrid.setAdapter(friendGridAdapter);
-                                friendGrid.setExpanded(true);
-                                friendGrid.setEmptyView(friendError);
-
-                            } else {
-                                friendLayout.setVisibility(View.GONE);
-                                friendError.setVisibility(View.VISIBLE);
-                                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d(TAG, "JSON Error: " + e.getMessage());
-                            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
-                        }
-                        hideProgressDialog();
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                count++;
-                hideProgressDialog();
-                VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
-                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+            final ArrayList<Hobby> commonArrayList = new ArrayList<>();
+            JSONArray hobbyJSONArray = commonHobbyObj.getJSONArray("common_hobby");
+            for (int i = 0; i < hobbyJSONArray.length(); i++) {
+                JSONObject hobby = hobbyJSONArray.getJSONObject(i);
+                Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"), R.drawable.hobby);
+                commonArrayList.add(h);
             }
-        });
 
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
+            if (commonArrayList.isEmpty()) {
+                hobbyError.setVisibility(View.VISIBLE);
+                hobbyError.setText(R.string.hobby_empty_error);
+            }
+
+            ExpandableHeightGridView hobbyGrid = (ExpandableHeightGridView) commonHobbyView.findViewById(R.id.hobbyGrid);
+            HobbyGridAdapter hobbyGridAdapter = new HobbyGridAdapter(getApplicationContext(), commonArrayList);
+            hobbyGrid.setAdapter(hobbyGridAdapter);
+            hobbyGrid.setExpanded(true);
+            hobbyGrid.setEmptyView(hobbyError);
+
+            hobbyGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                }
+            });
+
+        } else {
+            hobbyLayout.setVisibility(View.GONE);
+            hobbyError.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void updateAllHobby(JSONObject allHobbyObj) throws JSONException {
+        int code = allHobbyObj.getInt("code");
+        Log.d(TAG, "Code (hobby): " + code);
+
+        LinearLayout hobbyLayout = (LinearLayout) allHobbyView.findViewById(R.id.hobbyLayout);
+        TextView hobbyError = (TextView) allHobbyView.findViewById(R.id.hobbyError);
+
+        if (code == 200) {
+            hobbyLayout.setVisibility(View.VISIBLE);
+            hobbyError.setVisibility(View.GONE);
+
+            final ArrayList<Hobby> hobbyArrayList = new ArrayList<>();
+            JSONArray hobbyJSONArray = allHobbyObj.getJSONArray("hobby");
+            for (int i = 0; i < hobbyJSONArray.length(); i++) {
+                JSONObject hobby = hobbyJSONArray.getJSONObject(i);
+                Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"), R.drawable.hobby);
+                hobbyArrayList.add(h);
+            }
+
+            if (hobbyArrayList.isEmpty()) {
+                hobbyError.setVisibility(View.VISIBLE);
+                hobbyError.setText(R.string.hobby_empty_error);
+            }
+
+            ExpandableHeightGridView hobbyGrid = (ExpandableHeightGridView) allHobbyView.findViewById(R.id.hobbyGrid);
+            HobbyGridAdapter hobbyGridAdapter = new HobbyGridAdapter(getApplicationContext(), hobbyArrayList);
+            hobbyGrid.setAdapter(hobbyGridAdapter);
+            hobbyGrid.setExpanded(true);
+            hobbyGrid.setEmptyView(hobbyError);
+
+            hobbyGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                }
+            });
+
+        } else {
+            hobbyLayout.setVisibility(View.GONE);
+            hobbyError.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void updateFriends(JSONObject friendsObj) throws JSONException {
+        int code = friendsObj.getInt("code");
+        Log.d(TAG, "Code (friends): " + code);
+
+        LinearLayout friendLayout = (LinearLayout) allFriendsView.findViewById(R.id.friendLayout);
+        TextView friendError = (TextView) allFriendsView.findViewById(R.id.friendError);
+
+        if (code == 200) {
+            friendLayout.setVisibility(View.VISIBLE);
+            friendError.setVisibility(View.GONE);
+
+            ArrayList<User> friendArrayList = new ArrayList<>();
+            JSONArray friendJSONArray = friendsObj.getJSONArray("friends");
+            for (int i = 0; i < friendJSONArray.length(); i++) {
+                JSONObject friend = friendJSONArray.getJSONObject(i);
+                User user = new User(friend.getInt("friend_id"), friend.getString("user_name"), friend.getString("gender"));
+                friendArrayList.add(user);
+            }
+
+            if (friendArrayList.isEmpty()) {
+                friendError.setVisibility(View.VISIBLE);
+                friendError.setText(R.string.friend_empty_error);
+            }
+
+            ExpandableHeightGridView friendGrid = (ExpandableHeightGridView) allFriendsView.findViewById(R.id.friendGrid);
+            FriendGridAdapter friendGridAdapter = new FriendGridAdapter(getApplicationContext(), friendArrayList);
+            friendGrid.setAdapter(friendGridAdapter);
+            friendGrid.setExpanded(true);
+            friendGrid.setEmptyView(friendError);
+
+        } else {
+            friendLayout.setVisibility(View.GONE);
+            friendError.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -453,7 +354,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void hideProgressDialog() {
-        if (pDialog.isShowing() && count == 4) {
+        if (pDialog.isShowing()) {
             contentUser.setVisibility(View.VISIBLE);
             pDialog.dismiss();
         }

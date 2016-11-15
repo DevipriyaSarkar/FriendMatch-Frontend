@@ -17,6 +17,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -37,6 +38,7 @@ import static com.friendmatch_frontend.friendmatch.AppController.LOCAL_IP_ADDRES
 public class ProfileActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
+    static final int SOCKET_TIMEOUT_MS = 5000;
     ProgressDialog pDialog;
     ScrollView activity_profile;
     int userID;
@@ -104,6 +106,11 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        //Set a retry policy in case of SocketTimeout & ConnectionTimeout Exceptions.
+        //Volley does retry for you if you have specified the policy.
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
@@ -113,7 +120,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         infoObj = response.getJSONObject(0);
         friendsObj = response.getJSONObject(1);
-        hobbyObj = response.getJSONObject(3);
+        hobbyObj = response.getJSONObject(2);
 
         updateInfo(infoObj);
         updateHobby(hobbyObj);

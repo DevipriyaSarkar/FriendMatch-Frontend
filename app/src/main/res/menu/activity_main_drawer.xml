@@ -8,7 +8,7 @@
             android:title="@string/nav_menu_profile" />
         <item
             android:id="@+id/nav_log_out"
-            android:icon="@drawable/about"
+            android:icon="@drawable/logout"
             android:title="@string/nav_menu_log_out" />
         <item
             android:id="@+id/nav_share"

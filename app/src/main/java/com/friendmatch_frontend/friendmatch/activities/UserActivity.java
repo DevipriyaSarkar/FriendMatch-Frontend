@@ -1,6 +1,10 @@
 package com.friendmatch_frontend.friendmatch.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -9,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
@@ -43,7 +48,13 @@ import org.json.JSONObject;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
 
@@ -53,10 +64,12 @@ public class UserActivity extends AppCompatActivity {
     ProgressDialog pDialog;
     NestedScrollView contentUser;
     CollapsingToolbarLayout toolbarLayout;
+    FloatingActionButton friendOperationFAB;
     View commonHobbyView, relatedHobbyView, allHobbyView, allFriendsView;
     TextView commonHobbyHeading, relatedHobbyHeading, allHobbyHeading, allFriendsHeading;
     static final int SOCKET_TIMEOUT_MS = 5000;
     int friendID;   // user ID of the clicked friend/user
+    int isFriend; // whether to show related hobby section - show only if not friends
     String friendName, friendGender;
     int count = 0;  // count of the number of async tasks completed
 
@@ -72,6 +85,7 @@ public class UserActivity extends AppCompatActivity {
         friendID = bundle.getInt("FRIEND_ID");
         friendName = bundle.getString("FRIEND_NAME");
         friendGender = bundle.getString("FRIEND_GENDER");
+        isFriend = bundle.getInt("IS_FRIEND");
 
         contentUser = (NestedScrollView) findViewById(R.id.contentUser);
 
@@ -89,6 +103,9 @@ public class UserActivity extends AppCompatActivity {
         allHobbyHeading.setText(R.string.all_hobby_section_heading);
         relatedHobbyHeading.setText(R.string.related_hobby_section_heading);
         allFriendsHeading.setText(R.string.all_friends_section_heading);
+
+        if (isFriend == 1)
+            relatedHobbyView.setVisibility(View.GONE);
 
         // setting up the collapsing toolbar
         toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
@@ -120,12 +137,56 @@ public class UserActivity extends AppCompatActivity {
 
         getUserProfile();
 
-        FloatingActionButton addFriendFAB = (FloatingActionButton) findViewById(R.id.addFriendFAB);
-        addFriendFAB.setOnClickListener(new View.OnClickListener() {
+        friendOperationFAB = (FloatingActionButton) findViewById(R.id.friendOperationFAB);
+        if (isFriend == 1) {
+            friendOperationFAB.setImageResource(R.drawable.account_minus);
+        } else {
+            friendOperationFAB.setImageResource(R.drawable.account_plus);
+        }
+        friendOperationFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (isFriend == 1) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                    alertDialogBuilder.setTitle(R.string.remove_friend_dialog_title);
+                    alertDialogBuilder.setMessage(R.string.remove_friend_dialog_message);
+                    alertDialogBuilder.setPositiveButton(R.string.dialog_positive_button,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    removeFriend();
+                                }
+                            });
+                    alertDialogBuilder.setNegativeButton(R.string.dialog_negative_button,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // do nothing
+                                }
+                            });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                } else {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                    alertDialogBuilder.setTitle(R.string.add_friend_dialog_title);
+                    alertDialogBuilder.setMessage(R.string.add_friend_dialog_message);
+                    alertDialogBuilder.setPositiveButton(R.string.dialog_positive_button,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    addFriend();
+                                }
+                            });
+                    alertDialogBuilder.setNegativeButton(R.string.dialog_negative_button,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // do nothing
+                                }
+                            });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
             }
         });
     }
@@ -196,7 +257,8 @@ public class UserActivity extends AppCompatActivity {
 
         updateInfo(infoObj);
         updateCommonHobby(commonHobbyObj);
-        updateRelatedHobby(relatedHobbyObj);
+        if (isFriend == 0)
+            updateRelatedHobby(relatedHobbyObj);
         updateAllHobby(allHobbyObj);
         updateFriends(friendsObj);
 
@@ -376,11 +438,12 @@ public class UserActivity extends AppCompatActivity {
             friendLayout.setVisibility(View.VISIBLE);
             friendError.setVisibility(View.GONE);
 
-            ArrayList<User> friendArrayList = new ArrayList<>();
+            final ArrayList<User> friendArrayList = new ArrayList<>();
             JSONArray friendJSONArray = friendsObj.getJSONArray("friends");
             for (int i = 0; i < friendJSONArray.length(); i++) {
                 JSONObject friend = friendJSONArray.getJSONObject(i);
-                User user = new User(friend.getInt("friend_id"), friend.getString("user_name"), friend.getString("gender"));
+                User user = new User(friend.getInt("friend_id"), friend.getString("user_name"),
+                        friend.getString("gender"), friend.getBoolean("is_your_friend"));
                 friendArrayList.add(user);
             }
 
@@ -395,10 +458,143 @@ public class UserActivity extends AppCompatActivity {
             friendGrid.setExpanded(true);
             friendGrid.setEmptyView(friendError);
 
+            friendGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                    int friendID = friendArrayList.get(position).getId();
+                    String friendName = friendArrayList.get(position).getName();
+                    String friendGender = friendArrayList.get(position).getGender();
+                    boolean isFriend = friendArrayList.get(position).isFriend();
+                    int checkFriend = (isFriend) ? 1 : 0;
+                    Intent intent = new Intent(view.getContext(), UserActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("FRIEND_ID", friendID);
+                    bundle.putString("FRIEND_NAME", friendName);
+                    bundle.putString("FRIEND_GENDER", friendGender);
+                    bundle.putInt("IS_FRIEND", checkFriend);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            });
+
         } else {
             friendLayout.setVisibility(View.GONE);
             friendError.setVisibility(View.VISIBLE);
         }
+
+    }
+
+    private void addFriend() {
+        pDialog.setMessage(getString(R.string.add_friend_progress_dialog_message));
+        showProgressDialog();
+
+        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/add/friend/" + friendID;
+
+        // handle cookies
+        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
+                CookiePolicy.ACCEPT_ALL);
+        CookieHandler.setDefault(cookieManager);
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                urlString, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "Response: " + response.toString());
+
+                        try {
+                            String message = response.getString("message");
+                            Log.d(TAG, "Message: " + message);
+                            int code = response.getInt("code");
+                            Log.d(TAG, "Code: " + code);
+
+                            if (code == 200) {
+                                friendOperationFAB.setImageResource(R.drawable.account_minus);
+                                hideProgressDialog();
+                                Snackbar.make(friendOperationFAB, R.string.add_friend_success, Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                hideProgressDialog();
+                                Snackbar.make(friendOperationFAB, R.string.add_friend_error, Snackbar.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d(TAG, "JSON Error: " + e.getMessage());
+                            hideProgressDialog();
+                            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
+                hideProgressDialog();
+                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+
+    }
+
+    private void removeFriend() {
+        pDialog.setMessage(getString(R.string.remove_friend_progress_dialog_message));
+        showProgressDialog();
+
+        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/delete/friend/" + friendID;
+
+        // handle cookies
+        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
+                CookiePolicy.ACCEPT_ALL);
+        CookieHandler.setDefault(cookieManager);
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                urlString, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "Response: " + response.toString());
+
+                        try {
+                            String message = response.getString("message");
+                            Log.d(TAG, "Message: " + message);
+                            int code = response.getInt("code");
+                            Log.d(TAG, "Code: " + code);
+
+                            if (code == 200) {
+                                friendOperationFAB.setImageResource(R.drawable.account_plus);
+                                hideProgressDialog();
+                                Snackbar.make(friendOperationFAB, R.string.remove_friend_success, Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                hideProgressDialog();
+                                Snackbar.make(friendOperationFAB, R.string.remove_friend_error, Snackbar.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d(TAG, "JSON Error: " + e.getMessage());
+                            hideProgressDialog();
+                            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
+                hideProgressDialog();
+                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
 
     }
 

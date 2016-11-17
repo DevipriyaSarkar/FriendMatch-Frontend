@@ -83,5 +83,17 @@
     <string name="logout_progress_dialog_message">Logging you out. Please wait.</string>
     <string name="nav_menu_log_out">Log Out</string>
     <string name="related_hobby_section_heading">Related Hobbies</string>
+    <string name="add_friend_progress_dialog_message">Adding friend.</string>
+    <string name="add_friend_error">Could not add friend.</string>
+    <string name="add_friend_success">Friend added.</string>
+    <string name="remove_friend_progress_dialog_message">Removing from friend list.</string>
+    <string name="remove_friend_error">Could not remove friend.</string>
+    <string name="remove_friend_success">Friend removed from friend list.</string>
+    <string name="dialog_positive_button">Yes</string>
+    <string name="dialog_negative_button">No</string>
+    <string name="remove_friend_dialog_title">Remove Friend</string>
+    <string name="add_friend_dialog_title">Add Friend</string>
+    <string name="remove_friend_dialog_message">Are you sure you want to remove this friend from your friend list?</string>
+    <string name="add_friend_dialog_message">Are you sure you want to add this friend to your friend list?</string>
 
 </resources>

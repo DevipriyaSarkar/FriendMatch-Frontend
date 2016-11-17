@@ -44,7 +44,7 @@
     <include layout="@layout/content_user" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addFriendFAB"
+        android:id="@+id/friendOperationFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"

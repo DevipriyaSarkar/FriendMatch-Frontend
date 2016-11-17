@@ -271,11 +271,12 @@ public class ProfileActivity extends AppCompatActivity {
             friendLayout.setVisibility(View.VISIBLE);
             friendError.setVisibility(View.GONE);
 
-            ArrayList<User> friendArrayList = new ArrayList<>();
+            final ArrayList<User> friendArrayList = new ArrayList<>();
             JSONArray friendJSONArray = friendsObj.getJSONArray("friends");
             for (int i = 0; i < friendJSONArray.length(); i++) {
                 JSONObject friend = friendJSONArray.getJSONObject(i);
-                User user = new User(friend.getInt("friend_id"), friend.getString("user_name"), friend.getString("gender"));
+                User user = new User(friend.getInt("friend_id"), friend.getString("user_name"),
+                        friend.getString("gender"), friend.getBoolean("is_your_friend"));
                 friendArrayList.add(user);
             }
 
@@ -289,6 +290,25 @@ public class ProfileActivity extends AppCompatActivity {
             friendGrid.setAdapter(friendGridAdapter);
             friendGrid.setExpanded(true);
             friendGrid.setEmptyView(friendError);
+
+            friendGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                    int friendID = friendArrayList.get(position).getId();
+                    String friendName = friendArrayList.get(position).getName();
+                    String friendGender = friendArrayList.get(position).getGender();
+                    boolean isFriend = friendArrayList.get(position).isFriend();
+                    int checkFriend = (isFriend) ? 1 : 0;
+                    Intent intent = new Intent(view.getContext(), UserActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("FRIEND_ID", friendID);
+                    bundle.putString("FRIEND_NAME", friendName);
+                    bundle.putString("FRIEND_GENDER", friendGender);
+                    bundle.putInt("IS_FRIEND", checkFriend);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            });
 
         } else {
             friendLayout.setVisibility(View.GONE);

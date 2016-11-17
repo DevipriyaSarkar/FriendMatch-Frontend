@@ -4,6 +4,7 @@ public class User {
     private int id;
     private String name;
     private String gender;
+    private boolean isFriend;
 
     public User() {
     }
@@ -12,6 +13,13 @@ public class User {
         this.id = id;
         this.name = name;
         this.gender = (gender.equals("M")) ? "Male" : "Female";
+    }
+
+    public User(int id, String name, String gender, boolean isFriend) {
+        this.id = id;
+        this.name = name;
+        this.gender = (gender.equals("M")) ? "Male" : "Female";
+        this.isFriend = isFriend;
     }
 
     public void setId(int id) {
@@ -26,6 +34,10 @@ public class User {
         this.gender = gender;
     }
 
+    public void setFriend(boolean friend) {
+        isFriend = friend;
+    }
+
     public int getId() {
         return id;
     }
@@ -37,4 +49,9 @@ public class User {
     public String getGender() {
         return gender;
     }
+
+    public boolean isFriend() {
+        return isFriend;
+    }
+
 }

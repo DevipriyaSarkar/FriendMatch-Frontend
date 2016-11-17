@@ -53,8 +53,8 @@ public class UserActivity extends AppCompatActivity {
     ProgressDialog pDialog;
     NestedScrollView contentUser;
     CollapsingToolbarLayout toolbarLayout;
-    View commonHobbyView, allHobbyView, allFriendsView;
-    TextView commonHobbyHeading, allHobbyHeading, allFriendsHeading;
+    View commonHobbyView, relatedHobbyView, allHobbyView, allFriendsView;
+    TextView commonHobbyHeading, relatedHobbyHeading, allHobbyHeading, allFriendsHeading;
     static final int SOCKET_TIMEOUT_MS = 5000;
     int friendID;   // user ID of the clicked friend/user
     String friendName, friendGender;
@@ -78,13 +78,16 @@ public class UserActivity extends AppCompatActivity {
         // setting up the section headings
         commonHobbyView = findViewById(R.id.userCommonHobbies);
         allHobbyView = findViewById(R.id.userAllHobbies);
+        relatedHobbyView = findViewById(R.id.useRelatedHobbies);
         allFriendsView = findViewById(R.id.userAllFriends);
         commonHobbyHeading = (TextView) commonHobbyView.findViewById(R.id.hobbySectionHeading);
+        relatedHobbyHeading = (TextView) relatedHobbyView.findViewById(R.id.hobbySectionHeading);
         allHobbyHeading = (TextView) allHobbyView.findViewById(R.id.hobbySectionHeading);
         allFriendsHeading = (TextView) allFriendsView.findViewById(R.id.friendsSectionHeading);
 
         commonHobbyHeading.setText(R.string.mutual_hobby_section_heading);
         allHobbyHeading.setText(R.string.all_hobby_section_heading);
+        relatedHobbyHeading.setText(R.string.related_hobby_section_heading);
         allFriendsHeading.setText(R.string.all_friends_section_heading);
 
         // setting up the collapsing toolbar
@@ -183,15 +186,17 @@ public class UserActivity extends AppCompatActivity {
 
 
     public void updateUI(JSONArray response) throws JSONException {
-        JSONObject infoObj, friendsObj, allHobbyObj, commonHobbyObj;
+        JSONObject infoObj, friendsObj, allHobbyObj, commonHobbyObj, relatedHobbyObj;
 
         infoObj = response.getJSONObject(0);
         friendsObj = response.getJSONObject(1);
         allHobbyObj = response.getJSONObject(2);
         commonHobbyObj = response.getJSONObject(3);
+        relatedHobbyObj = response.getJSONObject(4);
 
         updateInfo(infoObj);
         updateCommonHobby(commonHobbyObj);
+        updateRelatedHobby(relatedHobbyObj);
         updateAllHobby(allHobbyObj);
         updateFriends(friendsObj);
 
@@ -257,6 +262,49 @@ public class UserActivity extends AppCompatActivity {
 
             ExpandableHeightGridView hobbyGrid = (ExpandableHeightGridView) commonHobbyView.findViewById(R.id.hobbyGrid);
             HobbyGridAdapter hobbyGridAdapter = new HobbyGridAdapter(getApplicationContext(), commonArrayList);
+            hobbyGrid.setAdapter(hobbyGridAdapter);
+            hobbyGrid.setExpanded(true);
+            hobbyGrid.setEmptyView(hobbyError);
+
+            hobbyGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                }
+            });
+
+        } else {
+            hobbyLayout.setVisibility(View.GONE);
+            hobbyError.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void updateRelatedHobby(JSONObject relatedHobbyObj) throws JSONException {
+        int code = relatedHobbyObj.getInt("code");
+        Log.d(TAG, "Code (related hobby): " + code);
+
+        LinearLayout hobbyLayout = (LinearLayout) relatedHobbyView.findViewById(R.id.hobbyLayout);
+        TextView hobbyError = (TextView) relatedHobbyView.findViewById(R.id.hobbyError);
+
+        if (code == 200) {
+            hobbyLayout.setVisibility(View.VISIBLE);
+            hobbyError.setVisibility(View.GONE);
+
+            final ArrayList<Hobby> relatedArrayList = new ArrayList<>();
+            JSONArray hobbyJSONArray = relatedHobbyObj.getJSONArray("related_hobby");
+            for (int i = 0; i < hobbyJSONArray.length(); i++) {
+                JSONObject hobby = hobbyJSONArray.getJSONObject(i);
+                Hobby h = new Hobby(hobby.getInt("related_hobby_id"), hobby.getString("hobby_name"), R.drawable.hobby);
+                relatedArrayList.add(h);
+            }
+
+            if (relatedArrayList.isEmpty()) {
+                hobbyError.setVisibility(View.VISIBLE);
+                hobbyError.setText(R.string.hobby_empty_error);
+            }
+
+            ExpandableHeightGridView hobbyGrid = (ExpandableHeightGridView) relatedHobbyView.findViewById(R.id.hobbyGrid);
+            HobbyGridAdapter hobbyGridAdapter = new HobbyGridAdapter(getApplicationContext(), relatedArrayList);
             hobbyGrid.setAdapter(hobbyGridAdapter);
             hobbyGrid.setExpanded(true);
             hobbyGrid.setEmptyView(hobbyError);

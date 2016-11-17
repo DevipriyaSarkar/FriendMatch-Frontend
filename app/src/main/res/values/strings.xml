@@ -82,5 +82,6 @@
     <string name="log_out_dialog_message">Are you sure you want to log out?</string>
     <string name="logout_progress_dialog_message">Logging you out. Please wait.</string>
     <string name="nav_menu_log_out">Log Out</string>
+    <string name="related_hobby_section_heading">Related Hobbies</string>
 
 </resources>

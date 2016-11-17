@@ -60,7 +60,7 @@ public class EditProfileActivity extends AppCompatActivity {
     RadioButton genderRadioButton, maleButton, femaleButton;
     FloatingActionButton doneFAB;
     EditText editAge, editPhone, editLocation, editCity;
-    ArrayList<Hobby> allHobbyList;
+    ArrayList<Hobby> allHobbyList, pHobbyList;
     Bundle bundle;
     int userID;
 
@@ -117,8 +117,7 @@ public class EditProfileActivity extends AppCompatActivity {
         editLocation.setText(pLoc);
         editCity.setText(pCity);
 
-        ArrayList<Hobby> pHobbyList = bundle.getParcelableArrayList("hobby_list");
-
+        pHobbyList = bundle.getParcelableArrayList("hobby_list");
     }
 
     private void getAllHobbies() {
@@ -177,6 +176,14 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void updateUI() {
 
+        for (int i = 0; i < allHobbyList.size(); i++) {
+            for (int j = 0; j < pHobbyList.size(); j++) {
+                if(allHobbyList.get(i) == pHobbyList.get(j)) {
+                    allHobbyList.get(i).setSelected(true);
+                }
+            }
+        }
+
         selectableHobbyAdapter = new SelectableHobbyAdapter(this, allHobbyList);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         editHobbyList.setHasFixedSize(true);
@@ -224,7 +231,8 @@ public class EditProfileActivity extends AppCompatActivity {
         return hobbyList;
     }
 
-    private void saveEditedProfile(final char gender, int age, String phone, String location, String city, ArrayList<Hobby> hobbyList)
+    private void saveEditedProfile(final char gender, int age, String phone, String location, String city,
+                                   ArrayList<Hobby> hobbyList)
             throws MalformedURLException, URISyntaxException {
         pDialog.setMessage(getString(R.string.saving_progress_dialog_message));
         showProgressDialog();
@@ -246,8 +254,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         Map<String, String> postParam = new HashMap<String, String>();
         for (int i = 0; i < hobbyList.size(); i++) {
-            postParam.put("hobby_id", String.valueOf(hobbyList.get(i).getHobbyID()));
-            postParam.put("hobby_name", hobbyList.get(i).getHobbyName());
+            postParam.put(String.valueOf(hobbyList.get(i).getHobbyID()), hobbyList.get(i).getHobbyName());
         }
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,

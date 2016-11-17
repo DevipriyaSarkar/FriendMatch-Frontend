@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -40,6 +41,7 @@ public class FriendSuggestionFragment extends Fragment {
 
     private final String TAG = getClass().getSimpleName();
     ProgressDialog pDialog;
+    TextView friendError;
 
     public FriendSuggestionFragment() {
         // Required empty public constructor
@@ -92,12 +94,19 @@ public class FriendSuggestionFragment extends Fragment {
                                     friendArrayList.add(user);
                                 }
 
+                                if (friendArrayList.isEmpty()) {
+                                    friendError = (TextView) container.findViewById(R.id.friendError);
+                                    friendError.setVisibility(View.VISIBLE);
+                                    friendError.setText(R.string.hobby_empty_error);
+                                }
+
                                 ExpandableHeightGridView friendGrid =
                                         (ExpandableHeightGridView) container.findViewById(R.id.friendGrid);
                                 FriendGridAdapter friendGridAdapter =
                                         new FriendGridAdapter(getContext(), friendArrayList);
                                 friendGrid.setAdapter(friendGridAdapter);
                                 friendGrid.setExpanded(true);
+                                friendGrid.setEmptyView(friendError);
 
                                 friendGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override

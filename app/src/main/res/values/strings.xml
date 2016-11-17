@@ -4,7 +4,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder hobbyName -->
     <string name="hello_blank_fragment2">Hello events fragment</string>
 
     <!-- Strings related to login -->
@@ -66,5 +66,21 @@
     <string name="user_profile_prog_dialog_msg1">Loading</string>
     <string name="user_profile_prog_dialog_msg2">\'s profile</string>
     <string name="common_hobby_empty_error">Oops. No common hobbies.</string>
+    <string name="title_activity_edit_profile">Edit Profile</string>
+    <string name="male_radio_button_text">Male</string>
+    <string name="female_radio_button_text">Female</string>
+    <string name="gender_title">Gender</string>
+    <string name="prompt_age">Age</string>
+    <string name="prompt_phone">Phone Number</string>
+    <string name="prompt_city">City</string>
+    <string name="prompt_location">Locality</string>
+    <string name="hobby_title">Hobbies</string>
+    <string name="profile_edit_button">Edit</string>
+    <string name="saving_progress_dialog_message">Saving your details. Please wait.</string>
+    <string name="profile_saved_message">Profile saved.</string>
+    <string name="log_out_dialog_title">Log Out</string>
+    <string name="log_out_dialog_message">Are you sure you want to log out?</string>
+    <string name="logout_progress_dialog_message">Logging you out. Please wait.</string>
+    <string name="nav_menu_log_out">Log Out</string>
 
 </resources>

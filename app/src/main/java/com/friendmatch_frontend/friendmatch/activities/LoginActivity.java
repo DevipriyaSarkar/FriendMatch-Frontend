@@ -368,10 +368,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Log.d(TAG, "Message: " + message);
                             int code = response.getInt("code");
                             Log.d(TAG, "Code: " + code);
+                            int userID = response.getInt("user_id");
 
                             if (code == 200) {
                                 showProgress(false);
-                                finish();
 
                                 if (LOGGED_IN == 0) {
                                     sharedPreferences = getSharedPreferences("USER_LOGIN", Context.MODE_PRIVATE);
@@ -379,6 +379,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                     editor.putString("email", mEmail);
                                     editor.putString("password", mPassword);
+                                    editor.putInt("user_id", userID);
 
                                     editor.apply();
                                 }

@@ -7,6 +7,10 @@
             android:icon="@drawable/profile"
             android:title="@string/nav_menu_profile" />
         <item
+            android:id="@+id/nav_log_out"
+            android:icon="@drawable/about"
+            android:title="@string/nav_menu_log_out" />
+        <item
             android:id="@+id/nav_share"
             android:icon="@drawable/share"
             android:title="@string/nav_menu_share" />

@@ -246,19 +246,19 @@ public class RegisterActivity extends AppCompatActivity {
 
                             if (code == 201) {
                                 showProgress(false);
-                                finish();
 
                                 sharedPref = getSharedPreferences("USER_LOGIN", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
 
                                 editor.putString("email", mEmail);
                                 editor.putString("password", mPassword);
-                                editor.apply();
+                                editor.commit();
 
-                                finish();
-
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
+                                try {
+                                    validateUser(mEmail, mPassword);
+                                } catch (MalformedURLException | URISyntaxException e) {
+                                    e.printStackTrace();
+                                }
                             } else {
                                 showProgress(false);
                                 mPasswordView.setError(getString(R.string.error_incorrect_credentials));
@@ -287,6 +287,93 @@ public class RegisterActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("inputName", mName);
+                params.put("inputEmail", mEmail);
+                params.put("inputPassword", mPassword);
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public void validateUser(final String mEmail, final String mPassword) throws MalformedURLException, URISyntaxException {
+
+        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/validate_login?inputEmail="
+                + mEmail + "&inputPassword=" + mPassword;
+
+        // URL encode the string
+        URL url = new URL(urlString);
+        URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(),
+                url.getPath(), url.getQuery(), url.getRef());
+
+        urlString = uri.toASCIIString();
+
+        // handle cookies
+        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
+                CookiePolicy.ACCEPT_ALL);
+        CookieHandler.setDefault(cookieManager);
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                urlString, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "Response: " + response.toString());
+
+                        try {
+                            String message = response.getString("message");
+                            Log.d(TAG, "Message: " + message);
+                            int code = response.getInt("code");
+                            Log.d(TAG, "Code: " + code);
+                            int userID = response.getInt("user_id");
+
+                            if (code == 200) {
+                                showProgress(false);
+
+                                sharedPref = getSharedPreferences("USER_LOGIN", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+
+                                editor.putInt("user_id", userID);
+
+                                editor.commit();
+
+                                finish();
+                                Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
+                                startActivity(intent);
+                            } else {
+                                showProgress(false);
+                                mPasswordView.setError(getString(R.string.error_incorrect_credentials));
+                                mPasswordView.requestFocus();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d(TAG, "JSON Error: " + e.getMessage());
+                            showProgress(false);
+                            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
+                showProgress(false);
+                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
                 params.put("inputEmail", mEmail);
                 params.put("inputPassword", mPassword);
                 return params;

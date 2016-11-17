@@ -1,6 +1,7 @@
 package com.friendmatch_frontend.friendmatch.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -48,15 +50,19 @@ public class ProfileActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
     static final int SOCKET_TIMEOUT_MS = 5000;
     ProgressDialog pDialog;
-    ScrollView activity_profile;
+    ScrollView activityProfile;
     int userID;
+
+    int age;
+    String gender, email, phone, location, city;
+    ArrayList<Hobby> hobbyArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        activity_profile = (ScrollView) findViewById(R.id.activity_profile);
+        activityProfile = (ScrollView) findViewById(R.id.activity_profile);
 
         // initialize progress dialog
         pDialog = new ProgressDialog(this);
@@ -134,6 +140,23 @@ public class ProfileActivity extends AppCompatActivity {
         updateHobby(hobbyObj);
         updateFriends(friendsObj);
 
+        Button profEditButton = (Button) findViewById(R.id.profEditButton);
+        profEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("gender", gender);
+                bundle.putInt("age", age);
+                bundle.putString("phone", phone);
+                bundle.putString("location", location);
+                bundle.putString("city", city);
+                bundle.putParcelableArrayList("hobby_list", hobbyArrayList);
+                Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
         Log.d(TAG, "Updated UI");
         hideProgressDialog();
     }
@@ -162,7 +185,6 @@ public class ProfileActivity extends AppCompatActivity {
             // extract data
             JSONObject info = infoObj.getJSONObject("info");
             userID = info.getInt("id");
-            String gender;
             if (info.getString("gender").equals("M")) {
                 gender = "Male";
                 setProfilePicture(infoImage, 0);
@@ -171,17 +193,23 @@ public class ProfileActivity extends AppCompatActivity {
                 setProfilePicture(infoImage, 1);
             }
 
+            age = info.getInt("age");
+            email = info.getString("user_email");
+            phone = info.getString("phone_number");
+            location = info.getString("location");
+            city = info.getString("city");
+
             // set data
             infoName.setText(info.getString("user_name"));
             infoGender.setText(gender);
-            infoAge.setText(info.getString("age"));
-            infoEmail.setText(info.getString("user_email"));
+            infoAge.setText(String.valueOf(age));
+            infoEmail.setText(email);
             Linkify.addLinks(infoEmail, Linkify.EMAIL_ADDRESSES);
-            infoPhone.setText(info.getString("phone_number"));
+            infoPhone.setText(phone);
             Linkify.addLinks(infoPhone, Linkify.PHONE_NUMBERS);
-            infoLocation.setText(info.getString("location"));
+            infoLocation.setText(location);
             Linkify.addLinks(infoLocation, Linkify.MAP_ADDRESSES);
-            infoCity.setText(info.getString("city"));
+            infoCity.setText(city);
 
         } else {
             infoLayout.setVisibility(View.GONE);
@@ -200,7 +228,7 @@ public class ProfileActivity extends AppCompatActivity {
             hobbyLayout.setVisibility(View.VISIBLE);
             hobbyError.setVisibility(View.GONE);
 
-            final ArrayList<Hobby> hobbyArrayList = new ArrayList<>();
+            hobbyArrayList = new ArrayList<>();
             JSONArray hobbyJSONArray = hobbyObj.getJSONArray("hobby");
             for (int i = 0; i < hobbyJSONArray.length(); i++) {
                 JSONObject hobby = hobbyJSONArray.getJSONObject(i);
@@ -286,14 +314,14 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void showProgressDialog() {
         if (!pDialog.isShowing()) {
-            activity_profile.setVisibility(View.GONE);
+            activityProfile.setVisibility(View.GONE);
             pDialog.show();
         }
     }
 
     private void hideProgressDialog() {
         if (pDialog.isShowing()) {
-            activity_profile.setVisibility(View.VISIBLE);
+            activityProfile.setVisibility(View.VISIBLE);
             pDialog.dismiss();
         }
     }

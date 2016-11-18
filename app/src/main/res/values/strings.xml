@@ -4,7 +4,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- TODO: Remove or change this placeholder hobbyName -->
+    <!-- TODO: Remove or change this placeholder eventName -->
     <string name="hello_blank_fragment2">Hello events fragment</string>
 
     <!-- Strings related to login -->
@@ -55,11 +55,12 @@
     <string name="hobby_image_content_desc">Hobby Image</string>
     <string name="default_nav_user_name">User Name</string>
     <string name="default_nav_user_email">abc@example.com</string>
-    <string name="suggestion_section_title">Suggested Friends</string>
-    <string name="suggestion_progress_dialog_message">Suggesting friends for you…</string>
+    <string name="suggestion_friend_section_title">Suggested Friends</string>
+    <string name="suggestion_friend_progress_dialog_message">Suggesting friends for you…</string>
     <string name="user_profile_image_content_desc">User Profile Picture</string>
     <string name="hobby_empty_error">Oops. Hobby list empty.</string>
     <string name="friend_empty_error">Oops. Friend list empty.</string>
+    <string name="event_empty_error">Oops. Event list empty.</string>
     <string name="mutual_hobby_section_heading">Mutual Hobbies</string>
     <string name="all_hobby_section_heading">All Hobbies</string>
     <string name="all_friends_section_heading">All Friends</string>
@@ -86,14 +87,29 @@
     <string name="add_friend_progress_dialog_message">Adding friend.</string>
     <string name="add_friend_error">Could not add friend.</string>
     <string name="add_friend_success">Friend added.</string>
+    <string name="add_event_progress_dialog_message">Adding event.</string>
+    <string name="add_event_error">Could not add event.</string>
+    <string name="add_event_success">Friend event.</string>
     <string name="remove_friend_progress_dialog_message">Removing from friend list.</string>
     <string name="remove_friend_error">Could not remove friend.</string>
     <string name="remove_friend_success">Friend removed from friend list.</string>
+    <string name="remove_event_progress_dialog_message">Removing from event list.</string>
+    <string name="remove_event_error">Could not remove event.</string>
+    <string name="remove_event_success">Event removed from event list.</string>
     <string name="dialog_positive_button">Yes</string>
     <string name="dialog_negative_button">No</string>
     <string name="remove_friend_dialog_title">Remove Friend</string>
     <string name="add_friend_dialog_title">Add Friend</string>
+    <string name="remove_event_dialog_title">Remove Event</string>
+    <string name="add_event_dialog_title">Add Event</string>
     <string name="remove_friend_dialog_message">Are you sure you want to remove this friend from your friend list?</string>
     <string name="add_friend_dialog_message">Are you sure you want to add this friend to your friend list?</string>
+    <string name="remove_event_dialog_message">Are you sure you want to remove this event from your event list?</string>
+    <string name="add_event_dialog_message">Are you sure you want to add this event to your event list?</string>
+    <string name="suggestion_event_section_title">Suggested Events</string>
+    <string name="event_error_text">Could not get the event list.</string>
+    <string name="event_image_content_desc">Event Image</string>
+    <string name="suggestion_event_progress_dialog_message">Suggesting events for you…</string>
+    <string name="event_section_title">Events</string>
 
 </resources>

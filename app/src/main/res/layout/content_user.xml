@@ -170,7 +170,7 @@
 
         <include
             layout="@layout/content_hobby"
-            android:id="@+id/useRelatedHobbies"
+            android:id="@+id/userRelatedHobbies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -183,6 +183,12 @@
         <include
             layout="@layout/content_friends"
             android:id="@+id/userAllFriends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            layout="@layout/content_event"
+            android:id="@+id/userAllEvents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

@@ -52,7 +52,7 @@ public class FriendSuggestionFragment extends Fragment {
                              Bundle savedInstanceState) {
         // initialize progress dialog
         pDialog = new ProgressDialog(getContext());
-        pDialog.setMessage(getString(R.string.suggestion_progress_dialog_message));
+        pDialog.setMessage(getString(R.string.suggestion_friend_progress_dialog_message));
         pDialog.setCancelable(false);
 
         getFriendSuggestion(container);

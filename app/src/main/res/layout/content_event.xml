@@ -9,17 +9,18 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.friendmatch_frontend.friendmatch.fragments.EventsFragment" >
+    tools:context="com.friendmatch_frontend.friendmatch.activities.ProfileActivity" >
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:textAppearanceLarge"
         android:textStyle="bold"
-        android:text="@string/suggestion_event_section_title" />
+        android:id="@+id/eventSectionHeading"
+        android:text="@string/event_section_title" />
 
     <LinearLayout
-        android:id="@+id/eventSuggestionLayout"
+        android:id="@+id/eventLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

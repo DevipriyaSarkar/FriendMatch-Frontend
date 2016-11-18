@@ -8,7 +8,7 @@
 
     <array name="page_icon">
         <item>@drawable/human_greeting</item>
-        <item>@drawable/calendar</item>
+        <item>@drawable/calendar_white</item>
     </array>
 
 </resources>

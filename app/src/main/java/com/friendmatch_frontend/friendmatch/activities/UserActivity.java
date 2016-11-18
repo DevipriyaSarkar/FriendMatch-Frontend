@@ -1,10 +1,8 @@
 package com.friendmatch_frontend.friendmatch.activities;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -16,6 +14,8 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -33,9 +33,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.friendmatch_frontend.friendmatch.R;
+import com.friendmatch_frontend.friendmatch.adapters.EventListAdapter;
 import com.friendmatch_frontend.friendmatch.adapters.FriendGridAdapter;
 import com.friendmatch_frontend.friendmatch.adapters.HobbyGridAdapter;
 import com.friendmatch_frontend.friendmatch.application.AppController;
+import com.friendmatch_frontend.friendmatch.models.Event;
 import com.friendmatch_frontend.friendmatch.models.Hobby;
 import com.friendmatch_frontend.friendmatch.models.User;
 import com.friendmatch_frontend.friendmatch.utilities.ExpandableHeightGridView;
@@ -48,13 +50,7 @@ import org.json.JSONObject;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
 
@@ -65,7 +61,7 @@ public class UserActivity extends AppCompatActivity {
     NestedScrollView contentUser;
     CollapsingToolbarLayout toolbarLayout;
     FloatingActionButton friendOperationFAB;
-    View commonHobbyView, relatedHobbyView, allHobbyView, allFriendsView;
+    View commonHobbyView, relatedHobbyView, allHobbyView, allEventView, allFriendsView;
     TextView commonHobbyHeading, relatedHobbyHeading, allHobbyHeading, allFriendsHeading;
     static final int SOCKET_TIMEOUT_MS = 5000;
     int friendID;   // user ID of the clicked friend/user
@@ -92,7 +88,8 @@ public class UserActivity extends AppCompatActivity {
         // setting up the section headings
         commonHobbyView = findViewById(R.id.userCommonHobbies);
         allHobbyView = findViewById(R.id.userAllHobbies);
-        relatedHobbyView = findViewById(R.id.useRelatedHobbies);
+        relatedHobbyView = findViewById(R.id.userRelatedHobbies);
+        allEventView = findViewById(R.id.userAllEvents);
         allFriendsView = findViewById(R.id.userAllFriends);
         commonHobbyHeading = (TextView) commonHobbyView.findViewById(R.id.hobbySectionHeading);
         relatedHobbyHeading = (TextView) relatedHobbyView.findViewById(R.id.hobbySectionHeading);
@@ -247,13 +244,14 @@ public class UserActivity extends AppCompatActivity {
 
 
     public void updateUI(JSONArray response) throws JSONException {
-        JSONObject infoObj, friendsObj, allHobbyObj, commonHobbyObj, relatedHobbyObj;
+        JSONObject infoObj, friendsObj, allHobbyObj, commonHobbyObj, relatedHobbyObj, eventObj;
 
         infoObj = response.getJSONObject(0);
         friendsObj = response.getJSONObject(1);
         allHobbyObj = response.getJSONObject(2);
         commonHobbyObj = response.getJSONObject(3);
         relatedHobbyObj = response.getJSONObject(4);
+        eventObj = response.getJSONObject(5);
 
         updateInfo(infoObj);
         updateCommonHobby(commonHobbyObj);
@@ -261,6 +259,7 @@ public class UserActivity extends AppCompatActivity {
             updateRelatedHobby(relatedHobbyObj);
         updateAllHobby(allHobbyObj);
         updateFriends(friendsObj);
+        updateEvents(eventObj);
 
         Log.d(TAG, "Updated UI");
         hideProgressDialog();
@@ -484,6 +483,78 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
+    public void updateEvents(JSONObject eventObj) throws JSONException {
+        int code = eventObj.getInt("code");
+        Log.d(TAG, "Code (events): " + code);
+
+        LinearLayout eventLayout = (LinearLayout) allEventView.findViewById(R.id.eventLayout);
+        TextView eventError = (TextView) allEventView.findViewById(R.id.eventError);
+
+        if (code == 200) {
+            eventLayout.setVisibility(View.VISIBLE);
+            eventError.setVisibility(View.GONE);
+
+            int eventImageID = R.drawable.event;
+
+            final ArrayList<Event> eventArrayList = new ArrayList<>();
+            JSONArray eventJSONArray = eventObj.getJSONArray("event");
+            for (int i = 0; i < eventJSONArray.length(); i++) {
+                JSONObject event = eventJSONArray.getJSONObject(i);
+                Event e = new Event(event.getInt("event_id"), event.getString("event_name"),
+                        event.getString("event_city"), event.getString("event_date"), eventImageID,
+                        event.getBoolean("is_user_attending"));
+                eventArrayList.add(e);
+            }
+
+            if (eventArrayList.isEmpty()) {
+                eventLayout.setVisibility(View.GONE);
+                eventError.setVisibility(View.VISIBLE);
+                eventError.setText(R.string.event_empty_error);
+            }
+
+            RecyclerView eventList = (RecyclerView) allEventView.findViewById(R.id.eventList);
+            LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
+            EventListAdapter eventListAdapter = new EventListAdapter(getApplicationContext(), eventArrayList);
+            eventList.setHasFixedSize(true);
+            eventList.setLayoutManager(manager);
+            eventList.setAdapter(eventListAdapter);
+
+            eventListAdapter.setOnItemClickListener(new EventListAdapter.MyClickListener() {
+                @Override
+                public void onItemClick(final int position, View view) {
+                    // ask if they wanna attend that event
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                    alertDialogBuilder.setTitle(R.string.add_event_dialog_title);
+                    alertDialogBuilder.setMessage(R.string.add_event_dialog_message);
+                    alertDialogBuilder.setPositiveButton(R.string.dialog_positive_button,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    if (eventArrayList.get(position).isAttending())
+                                        removeEvent(eventArrayList.get(position));
+                                    else
+                                        addEvent(eventArrayList.get(position));
+                                }
+                            });
+                    alertDialogBuilder.setNegativeButton(R.string.dialog_negative_button,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // do nothing
+                                }
+                            });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
+            });
+
+        } else {
+            eventLayout.setVisibility(View.GONE);
+            eventError.setVisibility(View.VISIBLE);
+        }
+
+    }
+
     private void addFriend() {
         pDialog.setMessage(getString(R.string.add_friend_progress_dialog_message));
         showProgressDialog();
@@ -573,6 +644,118 @@ public class UserActivity extends AppCompatActivity {
                             } else {
                                 hideProgressDialog();
                                 Snackbar.make(friendOperationFAB, R.string.remove_friend_error, Snackbar.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d(TAG, "JSON Error: " + e.getMessage());
+                            hideProgressDialog();
+                            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
+                hideProgressDialog();
+                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+
+    }
+
+    private void addEvent(Event event) {
+        pDialog.setMessage(getString(R.string.add_event_progress_dialog_message));
+        showProgressDialog();
+
+        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/add/event/" + event.getEventID();
+
+        // handle cookies
+        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
+                CookiePolicy.ACCEPT_ALL);
+        CookieHandler.setDefault(cookieManager);
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                urlString, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "Response: " + response.toString());
+
+                        try {
+                            String message = response.getString("message");
+                            Log.d(TAG, "Message: " + message);
+                            int code = response.getInt("code");
+                            Log.d(TAG, "Code: " + code);
+
+                            if (code == 200) {
+                                hideProgressDialog();
+                                Toast.makeText(getApplicationContext(), R.string.add_event_success, Toast.LENGTH_SHORT).show();
+                            } else {
+                                hideProgressDialog();
+                                Toast.makeText(getApplicationContext(), R.string.add_event_error, Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d(TAG, "JSON Error: " + e.getMessage());
+                            hideProgressDialog();
+                            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error in " + TAG + " : " + error.getMessage());
+                hideProgressDialog();
+                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+
+    }
+
+    private void removeEvent(Event event) {
+        pDialog.setMessage(getString(R.string.remove_event_progress_dialog_message));
+        showProgressDialog();
+
+        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/delete/event/" + event.getEventID();
+
+        // handle cookies
+        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
+                CookiePolicy.ACCEPT_ALL);
+        CookieHandler.setDefault(cookieManager);
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                urlString, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "Response: " + response.toString());
+
+                        try {
+                            String message = response.getString("message");
+                            Log.d(TAG, "Message: " + message);
+                            int code = response.getInt("code");
+                            Log.d(TAG, "Code: " + code);
+
+                            if (code == 200) {
+                                hideProgressDialog();
+                                Toast.makeText(getApplicationContext(), R.string.remove_event_success, Toast.LENGTH_SHORT).show();
+                            } else {
+                                hideProgressDialog();
+                                Toast.makeText(getApplicationContext(), R.string.remove_event_error, Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {

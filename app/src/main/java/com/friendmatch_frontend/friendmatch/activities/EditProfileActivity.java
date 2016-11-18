@@ -123,7 +123,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void getAllHobbies() {
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/all_hobby";
+        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/all/hobby";
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),

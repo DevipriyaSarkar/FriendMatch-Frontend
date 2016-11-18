@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:textAppearanceLarge"
                 android:textStyle="bold"
-                android:text="@string/suggestion_section_title" />
+                android:text="@string/suggestion_friend_section_title" />
 
             <com.friendmatch_frontend.friendmatch.utilities.ExpandableHeightGridView
                 android:id="@+id/friendGrid"

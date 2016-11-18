@@ -7,7 +7,7 @@ public class Hobby implements Parcelable {
     private int hobbyID;
     private String hobbyName;
     private int hobbyImg;
-    private boolean isSelected = false;
+    private boolean isSelected;
 
     public Hobby() {
     }
@@ -15,12 +15,14 @@ public class Hobby implements Parcelable {
     public Hobby(int hobbyID, String hobbyName) {
         this.hobbyID = hobbyID;
         this.hobbyName = hobbyName;
+        this.isSelected = false;
     }
 
     public Hobby(int hobbyID, String hobbyName, int hobbyImg) {
         this.hobbyID = hobbyID;
         this.hobbyName = hobbyName;
         this.hobbyImg = hobbyImg;
+        this.isSelected = false;
     }
 
     public void setHobbyID(int hobbyID) {

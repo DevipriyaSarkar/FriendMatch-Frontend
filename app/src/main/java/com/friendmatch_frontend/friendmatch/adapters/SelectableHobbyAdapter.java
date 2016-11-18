@@ -35,13 +35,13 @@ public class SelectableHobbyAdapter extends RecyclerView.Adapter<SelectableHobby
         String hobbyName = hobby.getHobbyName();
         hobbyName = hobbyName.substring(0, 1).toUpperCase() + hobbyName.substring(1);
         holder.hobbyRowText.setText(hobbyName);
-        holder.rowView.setBackgroundColor(hobby.isSelected()
+        holder.rowView.setBackgroundColor(hobby.isHobby()
                 ? context.getResources().getColor(R.color.colorAccent) : Color.TRANSPARENT);
         holder.hobbyRowText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hobby.setSelected(!hobby.isSelected());
-                holder.rowView.setBackgroundColor(hobby.isSelected()
+                hobby.setHobby(!hobby.isHobby());
+                holder.rowView.setBackgroundColor(hobby.isHobby()
                         ? context.getResources().getColor(R.color.colorAccent) : Color.TRANSPARENT);
             }
         });

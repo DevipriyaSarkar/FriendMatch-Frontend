@@ -130,14 +130,12 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void updateUI(JSONArray response) throws JSONException {
-        JSONObject infoObj, friendsObj, hobbyObj;
+        JSONObject infoObj, friendsObj;
 
         infoObj = response.getJSONObject(0);
         friendsObj = response.getJSONObject(1);
-        hobbyObj = response.getJSONObject(2);
 
         updateInfo(infoObj);
-        updateHobby(hobbyObj);
         updateFriends(friendsObj);
 
         Button profEditButton = (Button) findViewById(R.id.profEditButton);
@@ -217,48 +215,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void updateHobby(JSONObject hobbyObj) throws JSONException {
-        int code = hobbyObj.getInt("code");
-        Log.d(TAG, "Code (hobby): " + code);
-
-        LinearLayout hobbyLayout = (LinearLayout) findViewById(R.id.hobbyLayout);
-        TextView hobbyError = (TextView) findViewById(R.id.hobbyError);
-
-        if (code == 200) {
-            hobbyLayout.setVisibility(View.VISIBLE);
-            hobbyError.setVisibility(View.GONE);
-
-            hobbyArrayList = new ArrayList<>();
-            JSONArray hobbyJSONArray = hobbyObj.getJSONArray("hobby");
-            for (int i = 0; i < hobbyJSONArray.length(); i++) {
-                JSONObject hobby = hobbyJSONArray.getJSONObject(i);
-                Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"), R.drawable.hobby);
-                hobbyArrayList.add(h);
-            }
-
-            if (hobbyArrayList.isEmpty()) {
-                hobbyError.setVisibility(View.VISIBLE);
-                hobbyError.setText(R.string.hobby_empty_error);
-            }
-
-            ExpandableHeightGridView hobbyGrid = (ExpandableHeightGridView) findViewById(R.id.hobbyGrid);
-            HobbyGridAdapter hobbyGridAdapter = new HobbyGridAdapter(getApplicationContext(), hobbyArrayList);
-            hobbyGrid.setAdapter(hobbyGridAdapter);
-            hobbyGrid.setExpanded(true);
-            hobbyGrid.setEmptyView(hobbyError);
-
-            hobbyGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                }
-            });
-
-        } else {
-            hobbyLayout.setVisibility(View.GONE);
-            hobbyError.setVisibility(View.VISIBLE);
-        }
-    }
 
     public void updateFriends(JSONObject friendsObj) throws JSONException {
         int code = friendsObj.getInt("code");

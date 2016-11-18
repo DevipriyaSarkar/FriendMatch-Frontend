@@ -25,7 +25,6 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,27 +35,20 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.friendmatch_frontend.friendmatch.R;
-import com.friendmatch_frontend.friendmatch.adapters.FriendGridAdapter;
+import com.friendmatch_frontend.friendmatch.adapters.ViewPagerAdapter;
 import com.friendmatch_frontend.friendmatch.application.AppController;
 import com.friendmatch_frontend.friendmatch.fragments.EventsFragment;
 import com.friendmatch_frontend.friendmatch.fragments.FriendSuggestionFragment;
-import com.friendmatch_frontend.friendmatch.models.User;
-import com.friendmatch_frontend.friendmatch.utilities.ExpandableHeightGridView;
 import com.friendmatch_frontend.friendmatch.utilities.PersistentCookieStore;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
 
@@ -122,6 +114,16 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_profile) {
             // show current user profile
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_hobby) {
+            // show hobby activity
+            Intent intent = new Intent(getApplicationContext(), HobbyActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_event) {
+            // show event activity
+            Intent intent = new Intent(getApplicationContext(), EventActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_log_out) {
@@ -348,43 +350,6 @@ public class MainActivity extends AppCompatActivity
     private void hideProgressDialog() {
         if (pDialog.isShowing()) {
             pDialog.dismiss();
-        }
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-        private final List<Integer> mFragmentIconList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title, int icon) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-            mFragmentIconList.add(icon);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            // return null to display only the icon
-            return null;
-            // return mFragmentTitleList.get(position); to get the title text
-        }
-
-        public int getPageIcon(int position) {
-            return mFragmentIconList.get(position);
         }
     }
 

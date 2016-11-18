@@ -68,6 +68,8 @@ public class UserActivity extends AppCompatActivity {
     int isFriend; // whether to show related hobby section - show only if not friends
     String friendName, friendGender;
     int count = 0;  // count of the number of async tasks completed
+    int eventImageID = R.drawable.event;
+    int hobbyImageID = R.drawable.hobby;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -312,7 +314,8 @@ public class UserActivity extends AppCompatActivity {
             JSONArray hobbyJSONArray = commonHobbyObj.getJSONArray("common_hobby");
             for (int i = 0; i < hobbyJSONArray.length(); i++) {
                 JSONObject hobby = hobbyJSONArray.getJSONObject(i);
-                Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"), R.drawable.hobby);
+                Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"),
+                        hobbyImageID, hobby.getBoolean("is_user_hobby"));
                 commonArrayList.add(h);
             }
 
@@ -355,7 +358,8 @@ public class UserActivity extends AppCompatActivity {
             JSONArray hobbyJSONArray = relatedHobbyObj.getJSONArray("related_hobby");
             for (int i = 0; i < hobbyJSONArray.length(); i++) {
                 JSONObject hobby = hobbyJSONArray.getJSONObject(i);
-                Hobby h = new Hobby(hobby.getInt("related_hobby_id"), hobby.getString("hobby_name"), R.drawable.hobby);
+                Hobby h = new Hobby(hobby.getInt("related_hobby_id"), hobby.getString("hobby_name"),
+                        hobbyImageID, hobby.getBoolean("is_user_hobby"));
                 relatedArrayList.add(h);
             }
 
@@ -398,7 +402,8 @@ public class UserActivity extends AppCompatActivity {
             JSONArray hobbyJSONArray = allHobbyObj.getJSONArray("hobby");
             for (int i = 0; i < hobbyJSONArray.length(); i++) {
                 JSONObject hobby = hobbyJSONArray.getJSONObject(i);
-                Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"), R.drawable.hobby);
+                Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"),
+                        hobbyImageID, hobby.getBoolean("is_user_hobby"));
                 hobbyArrayList.add(h);
             }
 
@@ -493,8 +498,6 @@ public class UserActivity extends AppCompatActivity {
         if (code == 200) {
             eventLayout.setVisibility(View.VISIBLE);
             eventError.setVisibility(View.GONE);
-
-            int eventImageID = R.drawable.event;
 
             final ArrayList<Event> eventArrayList = new ArrayList<>();
             JSONArray eventJSONArray = eventObj.getJSONArray("event");

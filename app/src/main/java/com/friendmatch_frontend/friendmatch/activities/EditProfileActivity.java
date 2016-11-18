@@ -179,7 +179,7 @@ public class EditProfileActivity extends AppCompatActivity {
         for (int i = 0; i < allHobbyList.size(); i++) {
             for (int j = 0; j < pHobbyList.size(); j++) {
                 if(allHobbyList.get(i) == pHobbyList.get(j)) {
-                    allHobbyList.get(i).setSelected(true);
+                    allHobbyList.get(i).setHobby(true);
                 }
             }
         }
@@ -208,7 +208,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 ArrayList<Hobby> selectedHobbyList = new ArrayList<Hobby>();
                 for (int i = 0; i < allHobbyList.size(); i++) {
                     Hobby hobby = allHobbyList.get(i);
-                    if (hobby.isSelected())
+                    if (hobby.isHobby())
                         selectedHobbyList.add(hobby);
                 }
 

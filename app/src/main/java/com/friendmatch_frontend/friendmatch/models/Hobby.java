@@ -7,7 +7,7 @@ public class Hobby implements Parcelable {
     private int hobbyID;
     private String hobbyName;
     private int hobbyImg;
-    private boolean isSelected;
+    private boolean isHobby;
 
     public Hobby() {
     }
@@ -15,14 +15,13 @@ public class Hobby implements Parcelable {
     public Hobby(int hobbyID, String hobbyName) {
         this.hobbyID = hobbyID;
         this.hobbyName = hobbyName;
-        this.isSelected = false;
     }
 
-    public Hobby(int hobbyID, String hobbyName, int hobbyImg) {
+    public Hobby(int hobbyID, String hobbyName, int hobbyImg, boolean isHobby) {
         this.hobbyID = hobbyID;
         this.hobbyName = hobbyName;
         this.hobbyImg = hobbyImg;
-        this.isSelected = false;
+        this.isHobby = isHobby;
     }
 
     public void setHobbyID(int hobbyID) {
@@ -49,13 +48,13 @@ public class Hobby implements Parcelable {
         return hobbyImg;
     }
 
-    public void setSelected(boolean selected) {
-        isSelected = selected;
+    public void setHobby(boolean hobby) {
+        isHobby = hobby;
     }
 
 
-    public boolean isSelected() {
-        return isSelected;
+    public boolean isHobby() {
+        return isHobby;
     }
 
 
@@ -68,7 +67,7 @@ public class Hobby implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(hobbyID);
         parcel.writeInt(hobbyImg);
-        int selected = (isSelected) ? 1 : 0;
+        int selected = (isHobby) ? 1 : 0;
         parcel.writeInt(selected);
         parcel.writeString(hobbyName);
     }
@@ -90,6 +89,6 @@ public class Hobby implements Parcelable {
         this.hobbyName = in.readString();
         this.hobbyID = in.readInt();
         this.hobbyImg = in.readInt();
-        this.isSelected = (in.readInt() == 1);
+        this.isHobby = (in.readInt() == 1);
     }
 }

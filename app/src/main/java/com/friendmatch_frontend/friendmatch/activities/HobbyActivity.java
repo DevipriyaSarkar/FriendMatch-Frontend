@@ -32,7 +32,7 @@ public class HobbyActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager_hobby);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs_hobby);
         tabLayout.setupWithViewPager(viewPager);
     }
 

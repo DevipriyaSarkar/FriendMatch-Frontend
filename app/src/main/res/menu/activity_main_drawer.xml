@@ -8,11 +8,11 @@
             android:title="@string/nav_menu_profile" />
         <item
             android:id="@+id/nav_hobby"
-            android:icon="@drawable/profile"
+            android:icon="@drawable/soccer"
             android:title="@string/nav_menu_hobby" />
         <item
             android:id="@+id/nav_event"
-            android:icon="@drawable/profile"
+            android:icon="@drawable/event_people"
             android:title="@string/nav_menu_event" />
         <item
             android:id="@+id/nav_log_out"

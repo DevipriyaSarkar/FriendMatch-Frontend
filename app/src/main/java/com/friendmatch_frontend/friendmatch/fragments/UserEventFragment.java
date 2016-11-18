@@ -41,6 +41,8 @@ public class UserEventFragment extends Fragment {
 
     private final String TAG = getClass().getSimpleName();
     ProgressDialog pDialog;
+    EventListAdapter eventListAdapter;
+    ArrayList<Event> eventArrayList;
     int eventImageID = R.drawable.event;
 
     public UserEventFragment() {
@@ -71,12 +73,12 @@ public class UserEventFragment extends Fragment {
                 CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
 
-        // final View userEventView = container.findViewById(R.id.userEventView);
+        final View userEventView = container.findViewById(R.id.userEventView);
 
-        final LinearLayout eventLayout = (LinearLayout) container.findViewById(R.id.eventLayout);
-        final TextView eventError = (TextView) container.findViewById(R.id.eventError);
-        // TextView eventSectionHeading = (TextView) container.findViewById(R.id.eventSectionHeading);
-        // eventSectionHeading.setText(R.string.user_event_heading);
+        final LinearLayout eventLayout = (LinearLayout) userEventView.findViewById(R.id.eventLayout);
+        final TextView eventError = (TextView) userEventView.findViewById(R.id.eventError);
+        TextView eventSectionHeading = (TextView) userEventView.findViewById(R.id.eventSectionHeading);
+        eventSectionHeading.setText(R.string.user_event_heading);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 urlString, null,
@@ -91,7 +93,7 @@ public class UserEventFragment extends Fragment {
 
                             if (code == 200) {
                                 JSONArray eventJSONArray = (response.getJSONObject("message")).getJSONArray("event");
-                                final ArrayList<Event> eventArrayList = new ArrayList<>();
+                                eventArrayList = new ArrayList<>();
 
                                 for (int i = 0; i < eventJSONArray.length(); i++) {
                                     JSONObject eObj = eventJSONArray.getJSONObject(i);
@@ -107,9 +109,9 @@ public class UserEventFragment extends Fragment {
                                     eventError.setText(R.string.event_empty_error);
                                 }
 
-                                RecyclerView eventList = (RecyclerView) container.findViewById(R.id.eventList);
-                                LinearLayoutManager manager = new LinearLayoutManager(container.getContext());
-                                EventListAdapter eventListAdapter = new EventListAdapter(container.getContext(), eventArrayList);
+                                RecyclerView eventList = (RecyclerView) userEventView.findViewById(R.id.eventList);
+                                LinearLayoutManager manager = new LinearLayoutManager(userEventView.getContext());
+                                eventListAdapter = new EventListAdapter(userEventView.getContext(), eventArrayList);
                                 eventList.setHasFixedSize(true);
                                 eventList.setLayoutManager(manager);
                                 eventList.setAdapter(eventListAdapter);
@@ -127,8 +129,6 @@ public class UserEventFragment extends Fragment {
                                                     public void onClick(DialogInterface arg0, int arg1) {
                                                         if (eventArrayList.get(position).isAttending())
                                                             removeEvent(eventArrayList.get(position));
-                                                        else
-                                                            addEvent(eventArrayList.get(position));
                                                     }
                                                 });
                                         alertDialogBuilder.setNegativeButton(R.string.dialog_negative_button,
@@ -170,7 +170,7 @@ public class UserEventFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    private void addEvent(Event event) {
+    private void addEvent(final Event event) {
         pDialog.setMessage(getString(R.string.add_event_progress_dialog_message));
         showProgressDialog();
 
@@ -196,6 +196,8 @@ public class UserEventFragment extends Fragment {
                             Log.d(TAG, "Code: " + code);
 
                             if (code == 200) {
+                                eventArrayList.remove(event);
+                                eventListAdapter.notifyDataSetChanged();
                                 hideProgressDialog();
                                 Toast.makeText(getContext(), R.string.add_event_success, Toast.LENGTH_SHORT).show();
                             } else {
@@ -226,7 +228,7 @@ public class UserEventFragment extends Fragment {
 
     }
 
-    private void removeEvent(Event event) {
+    private void removeEvent(final Event event) {
         pDialog.setMessage(getString(R.string.remove_event_progress_dialog_message));
         showProgressDialog();
 
@@ -252,6 +254,8 @@ public class UserEventFragment extends Fragment {
                             Log.d(TAG, "Code: " + code);
 
                             if (code == 200) {
+                                eventArrayList.remove(event);
+                                eventListAdapter.notifyDataSetChanged();
                                 hideProgressDialog();
                                 Toast.makeText(getContext(), R.string.remove_event_success, Toast.LENGTH_SHORT).show();
                             } else {

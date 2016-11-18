@@ -32,7 +32,7 @@ public class EventActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager_event);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs_event);
         tabLayout.setupWithViewPager(viewPager);
     }
 

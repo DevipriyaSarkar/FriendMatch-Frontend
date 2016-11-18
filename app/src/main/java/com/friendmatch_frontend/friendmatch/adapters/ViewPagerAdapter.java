@@ -43,9 +43,11 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        // return null to display only the icon
-        return null;
-        // return mFragmentTitleList.get(position); to get the title text
+        if (isTabIcon) {
+            return null;    // to display only the icon
+        } else {
+            return mFragmentTitleList.get(position);    // to get the title text
+        }
     }
 
     public int getPageIcon(int position) {

@@ -12,7 +12,7 @@ public class DateHelper {
     public DateHelper(String date) {
         this.date = date;
         this.shortPattern = "yyyy-MM-dd";
-        this.longPattern = "dd MMM, YYYY";
+        this.longPattern = "dd MMM, yyyy";
     }
 
     public void setShortPattern(String shortPattern) {

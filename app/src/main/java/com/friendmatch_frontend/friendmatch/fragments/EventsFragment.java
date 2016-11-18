@@ -2,9 +2,15 @@ package com.friendmatch_frontend.friendmatch.fragments;
 
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,6 +50,8 @@ public class EventsFragment extends Fragment {
     private final String TAG = getClass().getSimpleName();
     ProgressDialog pDialog;
     TextView eventError;
+    ArrayList<Event> eventArrayList;
+    EventListAdapter eventListAdapter;
     int eventImageID = R.drawable.event;
 
     public EventsFragment() {
@@ -90,7 +98,7 @@ public class EventsFragment extends Fragment {
 
                             if (code == 200) {
                                 JSONArray eventJSONArray = (response.getJSONObject("message")).getJSONArray("suggested_event");
-                                final ArrayList<Event> eventArrayList = new ArrayList<>();
+                                eventArrayList = new ArrayList<>();
 
                                 for (int i = 0; i < eventJSONArray.length(); i++) {
                                     JSONObject eventObj = eventJSONArray.getJSONObject(i);
@@ -111,7 +119,7 @@ public class EventsFragment extends Fragment {
 
                                 RecyclerView eventList = (RecyclerView) container.findViewById(R.id.eventList);
                                 LinearLayoutManager manager = new LinearLayoutManager(container.getContext());
-                                EventListAdapter eventListAdapter = new EventListAdapter(container.getContext(), eventArrayList);
+                                eventListAdapter = new EventListAdapter(container.getContext(), eventArrayList);
                                 eventList.setHasFixedSize(true);
                                 eventList.setLayoutManager(manager);
                                 eventList.setAdapter(eventListAdapter);
@@ -169,7 +177,7 @@ public class EventsFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    private void addEvent(Event event) {
+    private void addEvent(final Event event) {
         pDialog.setMessage(getString(R.string.add_event_progress_dialog_message));
         showProgressDialog();
 
@@ -195,6 +203,8 @@ public class EventsFragment extends Fragment {
                             Log.d(TAG, "Code: " + code);
 
                             if (code == 200) {
+                                eventArrayList.remove(event);
+                                eventListAdapter.notifyDataSetChanged();
                                 hideProgressDialog();
                                 Toast.makeText(getContext(), R.string.add_event_success, Toast.LENGTH_SHORT).show();
                             } else {

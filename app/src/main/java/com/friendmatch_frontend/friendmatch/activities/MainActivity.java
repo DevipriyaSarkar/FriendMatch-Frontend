@@ -44,6 +44,7 @@ import com.friendmatch_frontend.friendmatch.utilities.PersistentCookieStore;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -304,7 +305,9 @@ public class MainActivity extends AppCompatActivity
 
                             if (code == 200) {
                                 SharedPreferences sp1 = getSharedPreferences("USER_LOGIN", MODE_PRIVATE);
+                                Log.d(TAG, String.valueOf(sp1.getAll()));
                                 SharedPreferences sp2 = getSharedPreferences("FIRST_LAUNCH", MODE_PRIVATE);
+                                Log.d(TAG, String.valueOf(sp2.getAll()));
                                 SharedPreferences.Editor editor1 = sp1.edit();
                                 SharedPreferences.Editor editor2 = sp2.edit();
                                 editor1.clear();

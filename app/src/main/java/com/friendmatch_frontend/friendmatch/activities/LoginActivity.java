@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // check if user is already logged in
         sharedPreferences = getSharedPreferences("USER_LOGIN", Context.MODE_PRIVATE);
+        Log.d(TAG, String.valueOf(sharedPreferences.getAll()));
         String user_email = sharedPreferences.getString("email", null);
         if (user_email != null) {
             LOGGED_IN = 1;
@@ -373,16 +374,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (code == 200) {
                                 showProgress(false);
 
-                                if (LOGGED_IN == 0) {
-                                    sharedPreferences = getSharedPreferences("USER_LOGIN", Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                sharedPreferences = getSharedPreferences("USER_LOGIN", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                                    editor.putString("email", mEmail);
-                                    editor.putString("password", mPassword);
-                                    editor.putInt("user_id", userID);
+                                editor.putString("email", mEmail);
+                                editor.putString("password", mPassword);
+                                editor.putInt("user_id", userID);
 
-                                    editor.apply();
-                                }
+                                editor.apply();
 
                                 finish();
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

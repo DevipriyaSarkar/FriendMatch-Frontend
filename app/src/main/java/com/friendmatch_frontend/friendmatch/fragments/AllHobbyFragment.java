@@ -43,6 +43,8 @@ public class AllHobbyFragment extends Fragment {
 
     private final String TAG = getClass().getSimpleName();
     ProgressDialog pDialog;
+    HobbyGridAdapter hobbyGridAdapter;
+    ArrayList<Hobby> hobbyArrayList;
     int hobbyImageID = R.drawable.hobby;
 
     public AllHobbyFragment() {
@@ -76,12 +78,12 @@ public class AllHobbyFragment extends Fragment {
                 CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
 
-        // final View allHobbyView = container.findViewById(R.id.allHobbyView);
+        final View allHobbyView = container.findViewById(R.id.allHobbyView);
 
-        final LinearLayout hobbyLayout = (LinearLayout) container.findViewById(R.id.hobbyLayout);
-        final TextView hobbyError = (TextView) container.findViewById(R.id.hobbyError);
-        // TextView hobbySectionHeading = (TextView) container.findViewById(R.id.hobbySectionHeading);
-        // hobbySectionHeading.setText(R.string.all_hobbies_heading);
+        final LinearLayout hobbyLayout = (LinearLayout) allHobbyView.findViewById(R.id.hobbyLayout);
+        final TextView hobbyError = (TextView) allHobbyView.findViewById(R.id.hobbyError);
+        TextView hobbySectionHeading = (TextView) allHobbyView.findViewById(R.id.hobbySectionHeading);
+        hobbySectionHeading.setText(R.string.all_hobbies_heading);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 urlString, null,
@@ -96,7 +98,7 @@ public class AllHobbyFragment extends Fragment {
 
                             if (code == 200) {
                                 JSONArray hobbyJSONArray = (response.getJSONObject("message")).getJSONArray("hobby");
-                                final ArrayList<Hobby> hobbyArrayList = new ArrayList<>();
+                                hobbyArrayList = new ArrayList<>();
 
                                 for (int i = 0; i < hobbyJSONArray.length(); i++) {
                                     JSONObject hObj = hobbyJSONArray.getJSONObject(i);
@@ -111,8 +113,8 @@ public class AllHobbyFragment extends Fragment {
                                 }
 
                                 ExpandableHeightGridView hobbyGrid = (ExpandableHeightGridView)
-                                        container.findViewById(R.id.hobbyGrid);
-                                HobbyGridAdapter hobbyGridAdapter = new HobbyGridAdapter(container.getContext(), hobbyArrayList);
+                                        allHobbyView.findViewById(R.id.hobbyGrid);
+                                hobbyGridAdapter = new HobbyGridAdapter(allHobbyView.getContext(), hobbyArrayList);
                                 hobbyGrid.setAdapter(hobbyGridAdapter);
                                 hobbyGrid.setExpanded(true);
                                 hobbyGrid.setEmptyView(hobbyError);
@@ -175,7 +177,7 @@ public class AllHobbyFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    private void addHobby(Hobby hobby) {
+    private void addHobby(final Hobby hobby) {
         pDialog.setMessage(getString(R.string.add_hobby_progress_dialog_message));
         showProgressDialog();
 
@@ -201,6 +203,8 @@ public class AllHobbyFragment extends Fragment {
                             Log.d(TAG, "Code: " + code);
 
                             if (code == 200) {
+                                hobbyArrayList.add(hobby);
+                                hobbyGridAdapter.notifyDataSetChanged();
                                 hideProgressDialog();
                                 Toast.makeText(getContext(), R.string.add_hobby_success, Toast.LENGTH_SHORT).show();
                             } else {
@@ -231,7 +235,7 @@ public class AllHobbyFragment extends Fragment {
 
     }
 
-    private void deleteHobby(Hobby hobby) {
+    private void deleteHobby(final Hobby hobby) {
         pDialog.setMessage(getString(R.string.remove_hobby_progress_dialog_message));
         showProgressDialog();
 
@@ -257,6 +261,8 @@ public class AllHobbyFragment extends Fragment {
                             Log.d(TAG, "Code: " + code);
 
                             if (code == 200) {
+                                hobbyArrayList.remove(hobby);
+                                hobbyGridAdapter.notifyDataSetChanged();
                                 hideProgressDialog();
                                 Toast.makeText(getContext(), R.string.remove_hobby_success, Toast.LENGTH_SHORT).show();
                             } else {

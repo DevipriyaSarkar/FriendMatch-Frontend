@@ -42,6 +42,8 @@ public class AllEventFragment extends Fragment {
 
     private final String TAG = getClass().getSimpleName();
     ProgressDialog pDialog;
+    EventListAdapter eventListAdapter;
+    ArrayList<Event> eventArrayList;
     int eventImageID = R.drawable.event;
 
     public AllEventFragment() {
@@ -73,12 +75,12 @@ public class AllEventFragment extends Fragment {
                 CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
 
-        // final View allEventView = container.findViewById(R.id.container);
+        final View allEventView = container.findViewById(R.id.allEventView);
 
-        final LinearLayout eventLayout = (LinearLayout) container.findViewById(R.id.eventLayout);
-        final TextView eventError = (TextView) container.findViewById(R.id.eventError);
-        // TextView eventSectionHeading = (TextView) container.findViewById(R.id.eventSectionHeading);
-        // eventSectionHeading.setText(R.string.all_event_heading);
+        final LinearLayout eventLayout = (LinearLayout) allEventView.findViewById(R.id.eventLayout);
+        final TextView eventError = (TextView) allEventView.findViewById(R.id.eventError);
+        TextView eventSectionHeading = (TextView) allEventView.findViewById(R.id.eventSectionHeading);
+        eventSectionHeading.setText(R.string.all_event_heading);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 urlString, null,
@@ -93,7 +95,7 @@ public class AllEventFragment extends Fragment {
 
                             if (code == 200) {
                                 JSONArray eventJSONArray = (response.getJSONObject("message")).getJSONArray("event");
-                                final ArrayList<Event> eventArrayList = new ArrayList<>();
+                                eventArrayList = new ArrayList<>();
 
                                 for (int i = 0; i < eventJSONArray.length(); i++) {
                                     JSONObject eObj = eventJSONArray.getJSONObject(i);
@@ -109,10 +111,10 @@ public class AllEventFragment extends Fragment {
                                     eventError.setText(R.string.event_empty_error);
                                 }
 
-                                RecyclerView eventList = (RecyclerView) container.findViewById(R.id.eventList);
-                                LinearLayoutManager manager = new LinearLayoutManager(container.getContext());
-                                EventListAdapter eventListAdapter =
-                                        new EventListAdapter(container.getContext(), eventArrayList);
+                                RecyclerView eventList = (RecyclerView) allEventView.findViewById(R.id.eventList);
+                                LinearLayoutManager manager = new LinearLayoutManager(allEventView.getContext());
+                                eventListAdapter =
+                                        new EventListAdapter(allEventView.getContext(), eventArrayList);
                                 eventList.setHasFixedSize(true);
                                 eventList.setLayoutManager(manager);
                                 eventList.setAdapter(eventListAdapter);
@@ -173,7 +175,7 @@ public class AllEventFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    private void addEvent(Event event) {
+    private void addEvent(final Event event) {
         pDialog.setMessage(getString(R.string.add_event_progress_dialog_message));
         showProgressDialog();
 
@@ -199,6 +201,8 @@ public class AllEventFragment extends Fragment {
                             Log.d(TAG, "Code: " + code);
 
                             if (code == 200) {
+                                eventArrayList.add(event);
+                                eventListAdapter.notifyDataSetChanged();
                                 hideProgressDialog();
                                 Toast.makeText(getContext(), R.string.add_event_success, Toast.LENGTH_SHORT).show();
                             } else {
@@ -229,7 +233,7 @@ public class AllEventFragment extends Fragment {
 
     }
 
-    private void removeEvent(Event event) {
+    private void removeEvent(final Event event) {
         pDialog.setMessage(getString(R.string.remove_event_progress_dialog_message));
         showProgressDialog();
 
@@ -255,6 +259,8 @@ public class AllEventFragment extends Fragment {
                             Log.d(TAG, "Code: " + code);
 
                             if (code == 200) {
+                                eventArrayList.remove(event);
+                                eventListAdapter.notifyDataSetChanged();
                                 hideProgressDialog();
                                 Toast.makeText(getContext(), R.string.remove_event_success, Toast.LENGTH_SHORT).show();
                             } else {

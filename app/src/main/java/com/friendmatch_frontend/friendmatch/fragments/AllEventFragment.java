@@ -46,6 +46,11 @@ public class AllEventFragment extends Fragment {
     ArrayList<Event> eventArrayList;
     int eventImageID = R.drawable.event;
 
+    View allEventView;
+    LinearLayout eventLayout;
+    TextView eventError;
+    TextView eventSectionHeading;
+
     public AllEventFragment() {
         // Required empty public constructor
     }
@@ -75,11 +80,10 @@ public class AllEventFragment extends Fragment {
                 CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
 
-        final View allEventView = container.findViewById(R.id.allEventView);
-
-        final LinearLayout eventLayout = (LinearLayout) allEventView.findViewById(R.id.eventLayout);
-        final TextView eventError = (TextView) allEventView.findViewById(R.id.eventError);
-        TextView eventSectionHeading = (TextView) allEventView.findViewById(R.id.eventSectionHeading);
+        allEventView = container.findViewById(R.id.allEventView);
+        eventLayout = (LinearLayout) allEventView.findViewById(R.id.eventLayout);
+        eventError = (TextView) allEventView.findViewById(R.id.eventError);
+        eventSectionHeading = (TextView) allEventView.findViewById(R.id.eventSectionHeading);
         eventSectionHeading.setText(R.string.all_event_heading);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,

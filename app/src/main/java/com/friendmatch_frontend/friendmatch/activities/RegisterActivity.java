@@ -43,6 +43,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.friendmatch_frontend.friendmatch.application.AppController.FIRST_HOBBY_ENTRY;
 import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
 
 
@@ -345,7 +346,11 @@ public class RegisterActivity extends AppCompatActivity {
                                 editor.commit();
 
                                 finish();
+                                FIRST_HOBBY_ENTRY = true;
                                 Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
+                                // bundle = new Bundle();
+                                // bundle.putInt("GO_TO_ADD_HOBBY", 1);
+                                // intent.putExtras(bundle);
                                 startActivity(intent);
                             } else {
                                 showProgress(false);

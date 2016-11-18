@@ -27,9 +27,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.friendmatch_frontend.friendmatch.R;
 import com.friendmatch_frontend.friendmatch.adapters.FriendGridAdapter;
-import com.friendmatch_frontend.friendmatch.adapters.HobbyGridAdapter;
 import com.friendmatch_frontend.friendmatch.application.AppController;
-import com.friendmatch_frontend.friendmatch.models.Hobby;
 import com.friendmatch_frontend.friendmatch.models.User;
 import com.friendmatch_frontend.friendmatch.utilities.ExpandableHeightGridView;
 import com.friendmatch_frontend.friendmatch.utilities.PersistentCookieStore;
@@ -55,7 +53,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     int age;
     String gender, email, phone, location, city;
-    ArrayList<Hobby> hobbyArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +145,6 @@ public class ProfileActivity extends AppCompatActivity {
                 bundle.putString("phone", phone);
                 bundle.putString("location", location);
                 bundle.putString("city", city);
-                bundle.putParcelableArrayList("hobby_list", hobbyArrayList);
                 Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);

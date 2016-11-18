@@ -11,6 +11,8 @@ import com.friendmatch_frontend.friendmatch.adapters.ViewPagerAdapter;
 import com.friendmatch_frontend.friendmatch.fragments.AllHobbyFragment;
 import com.friendmatch_frontend.friendmatch.fragments.UserHobbyFragment;
 
+import static com.friendmatch_frontend.friendmatch.application.AppController.FIRST_HOBBY_ENTRY;
+
 public class HobbyActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
@@ -38,7 +40,8 @@ public class HobbyActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new UserHobbyFragment(), pageTitle[0]);
+        if (!FIRST_HOBBY_ENTRY)
+            adapter.addFragment(new UserHobbyFragment(), pageTitle[0]);
         //noinspection ResourceType
         adapter.addFragment(new AllHobbyFragment(), pageTitle[1]);
         viewPager.setAdapter(adapter);

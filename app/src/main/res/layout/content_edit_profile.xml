@@ -111,19 +111,6 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/login_widget_margin"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:text="@string/hobby_title" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/editHobbyList"
-            android:paddingTop="@dimen/login_widget_margin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
     </LinearLayout>
 
 </ScrollView>

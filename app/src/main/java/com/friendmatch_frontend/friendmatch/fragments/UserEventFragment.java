@@ -45,6 +45,11 @@ public class UserEventFragment extends Fragment {
     ArrayList<Event> eventArrayList;
     int eventImageID = R.drawable.event;
 
+    View userEventView;
+    LinearLayout eventLayout;
+    TextView eventError;
+    TextView eventSectionHeading;
+
     public UserEventFragment() {
         // Required empty public constructor
     }
@@ -73,11 +78,10 @@ public class UserEventFragment extends Fragment {
                 CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
 
-        final View userEventView = container.findViewById(R.id.userEventView);
-
-        final LinearLayout eventLayout = (LinearLayout) userEventView.findViewById(R.id.eventLayout);
-        final TextView eventError = (TextView) userEventView.findViewById(R.id.eventError);
-        TextView eventSectionHeading = (TextView) userEventView.findViewById(R.id.eventSectionHeading);
+        userEventView = container.findViewById(R.id.userEventView);
+        eventLayout = (LinearLayout) userEventView.findViewById(R.id.eventLayout);
+        eventError = (TextView) userEventView.findViewById(R.id.eventError);
+        eventSectionHeading = (TextView) userEventView.findViewById(R.id.eventSectionHeading);
         eventSectionHeading.setText(R.string.user_event_heading);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,

@@ -45,6 +45,11 @@ public class UserHobbyFragment extends Fragment {
     ArrayList<Hobby> hobbyArrayList;
     int hobbyImageID = R.drawable.hobby;
 
+    View userHobbyView;
+    LinearLayout hobbyLayout;
+    TextView hobbyError;
+    TextView hobbySectionHeading;
+
     public UserHobbyFragment() {
         // Required empty public constructor
     }
@@ -73,11 +78,10 @@ public class UserHobbyFragment extends Fragment {
                 CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
 
-        final View userHobbyView = container.findViewWithTag(R.id.userHobbyView);
-
-        final LinearLayout hobbyLayout = (LinearLayout) userHobbyView.findViewById(R.id.hobbyLayout);
-        final TextView hobbyError = (TextView) userHobbyView.findViewById(R.id.hobbyError);
-        TextView hobbySectionHeading = (TextView) userHobbyView.findViewById(R.id.hobbySectionHeading);
+        userHobbyView = container.findViewById(R.id.userHobbyView);
+        hobbyLayout = (LinearLayout) userHobbyView.findViewById(R.id.hobbyLayout);
+        hobbyError = (TextView) userHobbyView.findViewById(R.id.hobbyError);
+        hobbySectionHeading = (TextView) userHobbyView.findViewById(R.id.hobbySectionHeading);
         hobbySectionHeading.setText(R.string.user_hobbies_heading);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,

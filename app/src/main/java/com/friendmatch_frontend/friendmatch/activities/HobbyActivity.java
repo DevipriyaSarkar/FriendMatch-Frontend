@@ -1,10 +1,13 @@
 package com.friendmatch_frontend.friendmatch.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.friendmatch_frontend.friendmatch.R;
 import com.friendmatch_frontend.friendmatch.adapters.ViewPagerAdapter;
@@ -27,7 +30,6 @@ public class HobbyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hobby);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         pageTitle = getResources().getStringArray(R.array.hobby_page_title);
 
@@ -36,6 +38,20 @@ public class HobbyActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs_hobby);
         tabLayout.setupWithViewPager(viewPager);
+
+        if (FIRST_HOBBY_ENTRY) {
+            FloatingActionButton doneFAB = (FloatingActionButton) findViewById(R.id.doneFAB);
+            doneFAB.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -45,6 +61,34 @@ public class HobbyActivity extends AppCompatActivity {
         //noinspection ResourceType
         adapter.addFragment(new AllHobbyFragment(), pageTitle[1]);
         viewPager.setAdapter(adapter);
+    }
+
+    // Override BOTH getSupportParentActivityIntent() AND getParentActivityIntent() because
+    // if your device is running on API 11+ it will call the native
+    // getParentActivityIntent() method instead of the support version.
+    // The docs do **NOT** make this part clear and it is important!
+
+    @Override
+    public Intent getSupportParentActivityIntent() {
+        return getParentActivityIntentImpl();
+    }
+
+    @Override
+    public Intent getParentActivityIntent() {
+        return getParentActivityIntentImpl();
+    }
+
+    private Intent getParentActivityIntentImpl() {
+        Intent intent = null;
+
+        // Here you need to do some logic to determine from which Activity you came.
+        if (!FIRST_HOBBY_ENTRY) {
+            intent = new Intent(getApplicationContext(), MainActivity.class);
+        } else {
+            intent = new Intent(getApplicationContext(), EditProfileActivity.class);
+        }
+
+        return intent;
     }
 }
 

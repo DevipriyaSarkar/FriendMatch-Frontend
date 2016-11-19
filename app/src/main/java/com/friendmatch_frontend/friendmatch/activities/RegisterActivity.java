@@ -333,9 +333,9 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d(TAG, "Message: " + message);
                             int code = response.getInt("code");
                             Log.d(TAG, "Code: " + code);
-                            int userID = response.getInt("user_id");
 
                             if (code == 200) {
+                                int userID = response.getInt("user_id");
                                 showProgress(false);
 
                                 sharedPref = getSharedPreferences("USER_LOGIN", Context.MODE_PRIVATE);

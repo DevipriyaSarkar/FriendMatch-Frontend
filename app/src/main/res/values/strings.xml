@@ -97,10 +97,14 @@
     <string name="dialog_positive_button">Yes</string>
     <string name="dialog_negative_button">No</string>
     <string name="remove_friend_dialog_title">Remove Friend</string>
+    <string name="remove_hobby_dialog_title">Remove Hobby</string>
+    <string name="remove_event_dialog_title">Remove Event</string>
     <string name="add_friend_dialog_title">Add Friend</string>
     <string name="add_event_dialog_title">Add Event</string>
     <string name="add_hobby_dialog_title">Add Hobby</string>
     <string name="remove_friend_dialog_message">Are you sure you want to remove this friend from your friend list?</string>
+    <string name="remove_hobby_dialog_message">Are you sure you want to remove this hobby from your hobby list?</string>
+    <string name="remove_event_dialog_message">Are you sure you want to remove this event from your event list?</string>
     <string name="add_friend_dialog_message">Are you sure you want to add this friend to your friend list?</string>
     <string name="add_event_dialog_message">Are you sure you want to add this event to your event list?</string>
     <string name="add_hobby_dialog_message">Are you sure you want to add this hobby to your hobby list?</string>

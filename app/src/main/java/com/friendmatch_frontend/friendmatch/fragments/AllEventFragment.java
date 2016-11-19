@@ -59,17 +59,25 @@ public class AllEventFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_all_event, container, false);
+
         // initialize progress dialog
         pDialog = new ProgressDialog(getContext());
         pDialog.setMessage(getString(R.string.event_progress_dialog_message));
         pDialog.setCancelable(false);
 
-        getAllEvents(container);
+        // getAllEvents(view);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all_event, container, false);
+        return view;
     }
 
-    public void getAllEvents(final ViewGroup container) {
+    @Override
+    public void onResume() {
+        getAllEvents(getView());
+        super.onResume();
+    }
+
+    public void getAllEvents(View view) {
 
         showProgressDialog();
 
@@ -80,7 +88,7 @@ public class AllEventFragment extends Fragment {
                 CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
 
-        allEventView = container.findViewById(R.id.allEventView);
+        allEventView = view.findViewById(R.id.allEventView);
         eventLayout = (LinearLayout) allEventView.findViewById(R.id.eventLayout);
         eventError = (TextView) allEventView.findViewById(R.id.eventError);
         eventSectionHeading = (TextView) allEventView.findViewById(R.id.eventSectionHeading);
@@ -126,27 +134,48 @@ public class AllEventFragment extends Fragment {
                                 eventListAdapter.setOnItemClickListener(new EventListAdapter.MyClickListener() {
                                     @Override
                                     public void onItemClick(final int position, View view) {
-                                        // ask if they wanna attend that event
+
                                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
-                                        alertDialogBuilder.setTitle(R.string.add_event_dialog_title);
-                                        alertDialogBuilder.setMessage(R.string.add_event_dialog_message);
-                                        alertDialogBuilder.setPositiveButton(R.string.dialog_positive_button,
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface arg0, int arg1) {
-                                                        if (eventArrayList.get(position).isAttending())
+
+                                        if (eventArrayList.get(position).isAttending()) {
+                                            // ask if they wanna delete that event
+                                            alertDialogBuilder.setTitle(R.string.remove_event_dialog_title);
+                                            alertDialogBuilder.setMessage(R.string.remove_event_dialog_message);
+                                            alertDialogBuilder.setPositiveButton(R.string.dialog_positive_button,
+                                                    new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface arg0, int arg1) {
                                                             removeEvent(eventArrayList.get(position));
-                                                        else
+                                                        }
+                                                    });
+                                            alertDialogBuilder.setNegativeButton(R.string.dialog_negative_button,
+                                                    new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            // do nothing
+                                                        }
+                                                    });
+
+                                        } else {
+                                            // ask if they wanna attend that event
+                                            alertDialogBuilder.setTitle(R.string.add_event_dialog_title);
+                                            alertDialogBuilder.setMessage(R.string.add_event_dialog_message);
+                                            alertDialogBuilder.setPositiveButton(R.string.dialog_positive_button,
+                                                    new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface arg0, int arg1) {
                                                             addEvent(eventArrayList.get(position));
-                                                    }
-                                                });
-                                        alertDialogBuilder.setNegativeButton(R.string.dialog_negative_button,
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        // do nothing
-                                                    }
-                                                });
+                                                        }
+                                                    });
+                                            alertDialogBuilder.setNegativeButton(R.string.dialog_negative_button,
+                                                    new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            // do nothing
+                                                        }
+                                                    });
+
+                                        }
                                         AlertDialog alertDialog = alertDialogBuilder.create();
                                         alertDialog.show();
                                     }
@@ -205,7 +234,7 @@ public class AllEventFragment extends Fragment {
                             Log.d(TAG, "Code: " + code);
 
                             if (code == 200) {
-                                eventArrayList.add(event);
+                                event.setAttending(true);
                                 eventListAdapter.notifyDataSetChanged();
                                 hideProgressDialog();
                                 Toast.makeText(getContext(), R.string.add_event_success, Toast.LENGTH_SHORT).show();
@@ -263,7 +292,7 @@ public class AllEventFragment extends Fragment {
                             Log.d(TAG, "Code: " + code);
 
                             if (code == 200) {
-                                eventArrayList.remove(event);
+                                event.setAttending(false);
                                 eventListAdapter.notifyDataSetChanged();
                                 hideProgressDialog();
                                 Toast.makeText(getContext(), R.string.remove_event_success, Toast.LENGTH_SHORT).show();

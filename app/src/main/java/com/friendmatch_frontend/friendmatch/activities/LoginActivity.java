@@ -369,9 +369,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Log.d(TAG, "Message: " + message);
                             int code = response.getInt("code");
                             Log.d(TAG, "Code: " + code);
-                            int userID = response.getInt("user_id");
 
                             if (code == 200) {
+                                int userID = response.getInt("user_id");
                                 showProgress(false);
 
                                 sharedPreferences = getSharedPreferences("USER_LOGIN", Context.MODE_PRIVATE);

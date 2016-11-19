@@ -57,17 +57,25 @@ public class UserHobbyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_user_hobby, container, false);
+
         // initialize progress dialog
         pDialog = new ProgressDialog(getContext());
         pDialog.setMessage(getString(R.string.hobby_progress_dialog_message));
         pDialog.setCancelable(false);
 
-        getUserHobbies(container);
+        // getUserHobbies(view);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_hobby, container, false);
+        return view;
     }
 
-    public void getUserHobbies(final ViewGroup container) {
+    @Override
+    public void onResume() {
+        getUserHobbies(getView());
+        super.onResume();
+    }
+
+    public void getUserHobbies(View view) {
 
         showProgressDialog();
 
@@ -78,7 +86,7 @@ public class UserHobbyFragment extends Fragment {
                 CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
 
-        userHobbyView = container.findViewById(R.id.userHobbyView);
+        userHobbyView = view.findViewById(R.id.userHobbyView);
         hobbyLayout = (LinearLayout) userHobbyView.findViewById(R.id.hobbyLayout);
         hobbyError = (TextView) userHobbyView.findViewById(R.id.hobbyError);
         hobbySectionHeading = (TextView) userHobbyView.findViewById(R.id.hobbySectionHeading);
@@ -122,27 +130,30 @@ public class UserHobbyFragment extends Fragment {
                                 hobbyGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                                        // ask if they wanna attend that event
+
+                                        // ask if they wanna remove that hobby
                                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
-                                        alertDialogBuilder.setTitle(R.string.add_hobby_dialog_title);
-                                        alertDialogBuilder.setMessage(R.string.add_hobby_dialog_message);
-                                        alertDialogBuilder.setPositiveButton(R.string.dialog_positive_button,
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface arg0, int arg1) {
-                                                        if (hobbyArrayList.get(i).isHobby())
-                                                            deleteHobby(hobbyArrayList.get(i));
-                                                    }
-                                                });
-                                        alertDialogBuilder.setNegativeButton(R.string.dialog_negative_button,
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        // do nothing
-                                                    }
-                                                });
-                                        AlertDialog alertDialog = alertDialogBuilder.create();
-                                        alertDialog.show();
+
+                                        if (hobbyArrayList.get(i).isHobby()){
+                                            alertDialogBuilder.setTitle(R.string.remove_hobby_dialog_title);
+                                            alertDialogBuilder.setMessage(R.string.remove_hobby_dialog_message);
+                                            alertDialogBuilder.setPositiveButton(R.string.dialog_positive_button,
+                                                    new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface arg0, int arg1) {
+                                                                deleteHobby(hobbyArrayList.get(i));
+                                                        }
+                                                    });
+                                            alertDialogBuilder.setNegativeButton(R.string.dialog_negative_button,
+                                                    new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            // do nothing
+                                                        }
+                                                    });
+                                            AlertDialog alertDialog = alertDialogBuilder.create();
+                                            alertDialog.show();
+                                        }
                                     }
                                 });
 
@@ -201,6 +212,7 @@ public class UserHobbyFragment extends Fragment {
                             Log.d(TAG, "Code: " + code);
 
                             if (code == 200) {
+                                hobby.setHobby(true);
                                 hobbyArrayList.add(hobby);
                                 hobbyGridAdapter.notifyDataSetChanged();
                                 hideProgressDialog();
@@ -259,6 +271,7 @@ public class UserHobbyFragment extends Fragment {
                             Log.d(TAG, "Code: " + code);
 
                             if (code == 200) {
+                                hobby.setHobby(false);
                                 hobbyArrayList.remove(hobby);
                                 hobbyGridAdapter.notifyDataSetChanged();
                                 hideProgressDialog();

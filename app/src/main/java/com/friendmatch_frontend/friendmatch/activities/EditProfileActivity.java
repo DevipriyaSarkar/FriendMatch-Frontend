@@ -171,9 +171,10 @@ public class EditProfileActivity extends AppCompatActivity {
                                 //if(GO_TO_ADD_HOBBY == 1)
                                 if(FIRST_HOBBY_ENTRY) {
                                     Intent intent = new Intent(getApplicationContext(), HobbyActivity.class);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putInt("SHOW_ONLY_ALL_HOBBIES", 1);
-                                    intent.putExtras(bundle);
+                                    // Bundle bundle = new Bundle();
+                                    // bundle.putInt("SHOW_ONLY_ALL_HOBBIES", 1);
+                                    // intent.putExtras(bundle);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                     startActivity(intent);
                                 } else {
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);

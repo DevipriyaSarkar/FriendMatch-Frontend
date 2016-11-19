@@ -162,11 +162,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean isEmailValid(String email) {
-        return email.contains("@");
+        return email.contains("@") && !email.contains(" ");
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 0;
+        return password.length() > 0 && !password.contains(" ");
     }
 
     private boolean isNameValid(String name) {
@@ -348,9 +348,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 finish();
                                 FIRST_HOBBY_ENTRY = true;
                                 Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
-                                // bundle = new Bundle();
-                                // bundle.putInt("GO_TO_ADD_HOBBY", 1);
-                                // intent.putExtras(bundle);
                                 startActivity(intent);
                             } else {
                                 showProgress(false);

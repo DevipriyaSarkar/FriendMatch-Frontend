@@ -10,7 +10,7 @@ import com.android.volley.toolbox.Volley;
 public class AppController extends Application {
 
     public static final String TAG = AppController.class.getSimpleName();
-    public static final String LOCAL_IP_ADDRESS = "192.168.43.226";
+    public static final String LOCAL_IP_ADDRESS = "192.168.1.107";
     public static boolean FIRST_HOBBY_ENTRY = false;
 
     private RequestQueue mRequestQueue;

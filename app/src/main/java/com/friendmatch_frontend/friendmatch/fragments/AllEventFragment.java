@@ -26,6 +26,7 @@ import com.friendmatch_frontend.friendmatch.adapters.EventListAdapter;
 import com.friendmatch_frontend.friendmatch.application.AppController;
 import com.friendmatch_frontend.friendmatch.models.Event;
 import com.friendmatch_frontend.friendmatch.utilities.PersistentCookieStore;
+import com.friendmatch_frontend.friendmatch.utilities.RecyclerViewClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -131,9 +132,10 @@ public class AllEventFragment extends Fragment {
                                 eventList.setLayoutManager(manager);
                                 eventList.setAdapter(eventListAdapter);
 
-                                eventListAdapter.setOnItemClickListener(new EventListAdapter.MyClickListener() {
+                                eventList.addOnItemTouchListener(new RecyclerViewClickListener(getContext(),
+                                        new RecyclerViewClickListener.OnItemClickListener() {
                                     @Override
-                                    public void onItemClick(final int position, View view) {
+                                    public void onItemClick(View view, final int position) {
 
                                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
 
@@ -178,8 +180,9 @@ public class AllEventFragment extends Fragment {
                                         }
                                         AlertDialog alertDialog = alertDialogBuilder.create();
                                         alertDialog.show();
+
                                     }
-                                });
+                                }));
 
                                 hideProgressDialog();
 

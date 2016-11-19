@@ -43,7 +43,6 @@ import static com.friendmatch_frontend.friendmatch.application.AppController.LOC
 public class EditProfileActivity extends AppCompatActivity {
 
     final String TAG = this.getClass().getSimpleName();
-    int GO_TO_ADD_HOBBY = 0;
     static final int SOCKET_TIMEOUT_MS = 5000;
     ScrollView contentEditProfile;
     ProgressDialog pDialog;
@@ -190,12 +189,8 @@ public class EditProfileActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), R.string.profile_saved_message, Toast.LENGTH_SHORT).show();
                                 finish();
 
-                                //if(GO_TO_ADD_HOBBY == 1)
                                 if(FIRST_HOBBY_ENTRY) {
                                     Intent intent = new Intent(getApplicationContext(), HobbyActivity.class);
-                                    // Bundle bundle = new Bundle();
-                                    // bundle.putInt("SHOW_ONLY_ALL_HOBBIES", 1);
-                                    // intent.putExtras(bundle);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                     startActivity(intent);
                                 } else {

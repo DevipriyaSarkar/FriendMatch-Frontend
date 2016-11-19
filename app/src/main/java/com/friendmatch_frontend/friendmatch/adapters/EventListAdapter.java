@@ -18,15 +18,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
 
     private Context context;
     private ArrayList<Event> eventArrayList;
-    private static MyClickListener myClickListener;
 
     public EventListAdapter(Context context, ArrayList<Event> eventArrayList) {
         this.context = context;
         this.eventArrayList = eventArrayList;
-    }
-
-    public void setOnItemClickListener(MyClickListener myClickListener) {
-        EventListAdapter.myClickListener = myClickListener;
     }
 
     @Override
@@ -49,11 +44,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
         return eventArrayList == null ? 0 : eventArrayList.size();
     }
 
-    public interface MyClickListener {
-        void onItemClick(int position, View view);
-    }
-
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView eventName, eventDate, eventCity;
         private ImageView eventImage;
@@ -64,12 +55,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
             eventDate = (TextView) itemView.findViewById(R.id.eventDate);
             eventCity = (TextView) itemView.findViewById(R.id.eventCity);
             eventImage = (ImageView) itemView.findViewById(R.id.eventImage);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            myClickListener.onItemClick(getAdapterPosition(), view);
         }
     }
 }

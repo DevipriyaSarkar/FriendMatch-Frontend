@@ -40,6 +40,7 @@ public class HobbyActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         if (FIRST_HOBBY_ENTRY) {
+            getSupportActionBar().setTitle(R.string.select_hobby_title);
             FloatingActionButton doneFAB = (FloatingActionButton) findViewById(R.id.doneFAB);
             doneFAB.setVisibility(View.VISIBLE);
             doneFAB.setOnClickListener(new View.OnClickListener() {

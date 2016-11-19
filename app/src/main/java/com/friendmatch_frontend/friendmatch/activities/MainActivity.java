@@ -9,9 +9,6 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -37,19 +34,16 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.friendmatch_frontend.friendmatch.R;
 import com.friendmatch_frontend.friendmatch.adapters.ViewPagerAdapter;
 import com.friendmatch_frontend.friendmatch.application.AppController;
-import com.friendmatch_frontend.friendmatch.fragments.EventsFragment;
+import com.friendmatch_frontend.friendmatch.fragments.EventSuggestionFragment;
 import com.friendmatch_frontend.friendmatch.fragments.FriendSuggestionFragment;
 import com.friendmatch_frontend.friendmatch.utilities.PersistentCookieStore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
 
@@ -266,7 +260,7 @@ public class MainActivity extends AppCompatActivity
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FriendSuggestionFragment(), pageTitle[0], pageIcon.getResourceId(0, 0));
         //noinspection ResourceType
-        adapter.addFragment(new EventsFragment(), pageTitle[1], pageIcon.getResourceId(1, 0));
+        adapter.addFragment(new EventSuggestionFragment(), pageTitle[1], pageIcon.getResourceId(1, 0));
         viewPager.setAdapter(adapter);
     }
 

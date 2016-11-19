@@ -124,5 +124,6 @@
     <string name="all_event_heading">All Events</string>
     <string name="user_event_heading">Your Events</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="select_hobby_title">Select Hobbies</string>
 
 </resources>

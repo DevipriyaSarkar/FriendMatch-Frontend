@@ -42,6 +42,7 @@ import com.friendmatch_frontend.friendmatch.models.Hobby;
 import com.friendmatch_frontend.friendmatch.models.User;
 import com.friendmatch_frontend.friendmatch.utilities.ExpandableHeightGridView;
 import com.friendmatch_frontend.friendmatch.utilities.PersistentCookieStore;
+import com.friendmatch_frontend.friendmatch.utilities.RecyclerViewClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -522,9 +523,10 @@ public class UserActivity extends AppCompatActivity {
             eventList.setLayoutManager(manager);
             eventList.setAdapter(eventListAdapter);
 
-            eventListAdapter.setOnItemClickListener(new EventListAdapter.MyClickListener() {
+            eventList.addOnItemTouchListener(new RecyclerViewClickListener(getApplicationContext(),
+                    new RecyclerViewClickListener.OnItemClickListener() {
                 @Override
-                public void onItemClick(final int position, View view) {
+                public void onItemClick(View view, final int position) {
                     // ask if they wanna attend that event
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
                     alertDialogBuilder.setTitle(R.string.add_event_dialog_title);
@@ -549,7 +551,7 @@ public class UserActivity extends AppCompatActivity {
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                 }
-            });
+            }));
 
         } else {
             eventLayout.setVisibility(View.GONE);

@@ -26,6 +26,7 @@ import com.friendmatch_frontend.friendmatch.adapters.EventListAdapter;
 import com.friendmatch_frontend.friendmatch.application.AppController;
 import com.friendmatch_frontend.friendmatch.models.Event;
 import com.friendmatch_frontend.friendmatch.utilities.PersistentCookieStore;
+import com.friendmatch_frontend.friendmatch.utilities.RecyclerViewClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
 
 
-public class EventsFragment extends Fragment {
+public class EventSuggestionFragment extends Fragment {
 
     private final String TAG = getClass().getSimpleName();
     ProgressDialog pDialog;
@@ -48,7 +49,7 @@ public class EventsFragment extends Fragment {
     EventListAdapter eventListAdapter;
     int eventImageID = R.drawable.event;
 
-    public EventsFragment() {
+    public EventSuggestionFragment() {
         // Required empty public constructor
     }
 
@@ -63,7 +64,7 @@ public class EventsFragment extends Fragment {
         getEventsSuggestion(container);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_events, container, false);
+        return inflater.inflate(R.layout.fragment_event_suggestion, container, false);
     }
 
     public void getEventsSuggestion(final ViewGroup container) {
@@ -118,9 +119,10 @@ public class EventsFragment extends Fragment {
                                 eventList.setLayoutManager(manager);
                                 eventList.setAdapter(eventListAdapter);
 
-                                eventListAdapter.setOnItemClickListener(new EventListAdapter.MyClickListener() {
+                                eventList.addOnItemTouchListener(new RecyclerViewClickListener(getContext(),
+                                        new RecyclerViewClickListener.OnItemClickListener() {
                                     @Override
-                                    public void onItemClick(final int position, View view) {
+                                    public void onItemClick(View view, final int position) {
                                         // ask if they wanna attend that event
                                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
                                         alertDialogBuilder.setTitle(R.string.add_event_dialog_title);
@@ -142,7 +144,7 @@ public class EventsFragment extends Fragment {
                                         AlertDialog alertDialog = alertDialogBuilder.create();
                                         alertDialog.show();
                                     }
-                                });
+                                }));
 
                                 hideProgressDialog();
 

@@ -67,7 +67,6 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         // Set up the login form.
-
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mNameView = (EditText) findViewById(R.id.name);
         mPasswordView = (EditText) findViewById(R.id.password);

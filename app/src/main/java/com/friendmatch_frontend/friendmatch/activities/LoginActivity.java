@@ -115,7 +115,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // check if user is already logged in
         sharedPreferences = getSharedPreferences("USER_LOGIN", Context.MODE_PRIVATE);
-        Log.d(TAG, String.valueOf(sharedPreferences.getAll()));
         String user_email = sharedPreferences.getString("email", null);
         if (user_email != null) {
             LOGGED_IN = 1;

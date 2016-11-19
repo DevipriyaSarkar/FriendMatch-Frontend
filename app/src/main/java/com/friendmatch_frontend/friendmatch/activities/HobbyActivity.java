@@ -41,9 +41,12 @@ public class HobbyActivity extends AppCompatActivity {
 
         if (FIRST_HOBBY_ENTRY) {
             FloatingActionButton doneFAB = (FloatingActionButton) findViewById(R.id.doneFAB);
+            doneFAB.setVisibility(View.VISIBLE);
             doneFAB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    finish();
+                    FIRST_HOBBY_ENTRY = false;
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                 }

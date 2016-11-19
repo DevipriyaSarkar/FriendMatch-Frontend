@@ -22,7 +22,6 @@ public class SplashActivity extends AppCompatActivity {
 
         // check if it's first launch
         SharedPreferences sp = getSharedPreferences("FIRST_LAUNCH", Context.MODE_PRIVATE);
-        Log.d(TAG, String.valueOf(sp.getAll()));
         int first_launch = sp.getInt("first_launch", 1);
 
         if (first_launch == 1) {

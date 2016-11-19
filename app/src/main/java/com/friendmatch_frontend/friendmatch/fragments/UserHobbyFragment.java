@@ -43,6 +43,7 @@ public class UserHobbyFragment extends Fragment {
     ProgressDialog pDialog;
     HobbyGridAdapter hobbyGridAdapter;
     ArrayList<Hobby> hobbyArrayList;
+    ExpandableHeightGridView hobbyGrid;
     int hobbyImageID = R.drawable.hobby;
 
     View userHobbyView;
@@ -119,7 +120,7 @@ public class UserHobbyFragment extends Fragment {
                                     hobbyError.setText(R.string.hobby_empty_error);
                                 }
 
-                                ExpandableHeightGridView hobbyGrid = (ExpandableHeightGridView)
+                                hobbyGrid = (ExpandableHeightGridView)
                                         userHobbyView.findViewById(R.id.hobbyGrid);
                                 hobbyGridAdapter =
                                         new HobbyGridAdapter(userHobbyView.getContext(), hobbyArrayList);
@@ -214,6 +215,9 @@ public class UserHobbyFragment extends Fragment {
                             if (code == 200) {
                                 hobby.setHobby(true);
                                 hobbyArrayList.add(hobby);
+                                hobbyGridAdapter = new HobbyGridAdapter(userHobbyView.getContext(), hobbyArrayList);
+                                hobbyGrid.setAdapter(hobbyGridAdapter);
+                                hobbyGrid.invalidateViews();
                                 hobbyGridAdapter.notifyDataSetChanged();
                                 hideProgressDialog();
                                 Toast.makeText(getContext(), R.string.add_hobby_success, Toast.LENGTH_SHORT).show();
@@ -273,6 +277,9 @@ public class UserHobbyFragment extends Fragment {
                             if (code == 200) {
                                 hobby.setHobby(false);
                                 hobbyArrayList.remove(hobby);
+                                hobbyGridAdapter = new HobbyGridAdapter(userHobbyView.getContext(), hobbyArrayList);
+                                hobbyGrid.setAdapter(hobbyGridAdapter);
+                                hobbyGrid.invalidateViews();
                                 hobbyGridAdapter.notifyDataSetChanged();
                                 hideProgressDialog();
                                 Toast.makeText(getContext(), R.string.remove_hobby_success, Toast.LENGTH_SHORT).show();

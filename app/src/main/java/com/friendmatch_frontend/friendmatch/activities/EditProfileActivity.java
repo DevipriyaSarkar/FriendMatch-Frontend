@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -82,27 +83,48 @@ public class EditProfileActivity extends AppCompatActivity {
         if (bundle != null) {
             if (bundle.getString("gender") != null)
                 setOldValues();
-            //else if (bundle.getInt("GO_TO_ADD_HOBBY") == 1)
-            //    GO_TO_ADD_HOBBY = 1;
         }
 
         doneFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                int selectedId = genderRadioGroup.getCheckedRadioButtonId();
-                genderRadioButton = (RadioButton) findViewById(selectedId);
-                char gender = (genderRadioButton.getText().toString().equals("Male")) ? 'M' : 'F';
+                boolean isFormFilled = true;
 
-                int age = Integer.parseInt(editAge.getText().toString());
+                char gender = ' ';
+                int selectedId = genderRadioGroup.getCheckedRadioButtonId();
+                if (selectedId != -1) {
+                    genderRadioButton = (RadioButton) findViewById(selectedId);
+                    gender = (genderRadioButton.getText().toString().equals("Male")) ? 'M' : 'F';
+                } else {
+                    isFormFilled = false;
+                }
+
+                String ageStr = editAge.getText().toString();
+                int age = 0;
+
+                if (isEmpty(ageStr)) {
+                    isFormFilled = false;
+                }
+                else
+                    age = Integer.parseInt(ageStr);
+
                 String phone = editPhone.getText().toString();
                 String location = editLocation.getText().toString();
                 String city = editCity.getText().toString();
 
-                try {
-                    saveEditedProfile(gender, age, phone, location, city);
-                } catch (MalformedURLException | URISyntaxException e) {
-                    e.printStackTrace();
+                if (isEmpty(phone) || isEmpty(location) || isEmpty(city)) {
+                    isFormFilled = false;
+                }
+
+                if (isFormFilled) {
+                    try {
+                        saveEditedProfile(gender, age, phone, location, city);
+                    } catch (MalformedURLException | URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please fill all the details to proceed.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -200,6 +222,11 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        //Set a retry policy in case of SocketTimeout & ConnectionTimeout Exceptions.
+        //Volley does retry for you if you have specified the policy.
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
@@ -216,6 +243,10 @@ public class EditProfileActivity extends AppCompatActivity {
             contentEditProfile.setVisibility(View.VISIBLE);
             pDialog.dismiss();
         }
+    }
+
+    private boolean isEmpty(String string) {
+        return string == null || string.equals("") || string.equals(" ");
     }
 
 }

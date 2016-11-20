@@ -41,7 +41,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.ArrayList;
 
-import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
+import static com.friendmatch_frontend.friendmatch.application.AppController.SERVER_URL;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -76,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/profile";
+        String urlString = SERVER_URL + "/user/profile";
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),

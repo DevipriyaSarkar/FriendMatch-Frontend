@@ -36,7 +36,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.ArrayList;
 
-import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
+import static com.friendmatch_frontend.friendmatch.application.AppController.SERVER_URL;
 
 
 public class AllHobbyFragment extends Fragment {
@@ -83,7 +83,7 @@ public class AllHobbyFragment extends Fragment {
 
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/all/hobby";
+        String urlString = SERVER_URL + "/all/hobby";
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getContext()),
@@ -212,7 +212,7 @@ public class AllHobbyFragment extends Fragment {
         pDialog.setMessage(getString(R.string.add_hobby_progress_dialog_message));
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/add/hobby/" + hobby.getHobbyID();
+        String urlString = SERVER_URL + "/user/add/hobby/" + hobby.getHobbyID();
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getContext()),
@@ -274,7 +274,7 @@ public class AllHobbyFragment extends Fragment {
         pDialog.setMessage(getString(R.string.remove_hobby_progress_dialog_message));
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/delete/hobby/" + hobby.getHobbyID();
+        String urlString = SERVER_URL + "/user/delete/hobby/" + hobby.getHobbyID();
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getContext()),

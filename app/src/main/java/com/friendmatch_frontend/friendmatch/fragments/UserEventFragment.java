@@ -36,7 +36,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.ArrayList;
 
-import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
+import static com.friendmatch_frontend.friendmatch.application.AppController.SERVER_URL;
 
 public class UserEventFragment extends Fragment {
 
@@ -80,7 +80,7 @@ public class UserEventFragment extends Fragment {
 
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/event";
+        String urlString = SERVER_URL + "/user/event";
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getContext()),
@@ -193,7 +193,7 @@ public class UserEventFragment extends Fragment {
         pDialog.setMessage(getString(R.string.add_event_progress_dialog_message));
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/add/event/" + event.getEventID();
+        String urlString = SERVER_URL + "/user/add/event/" + event.getEventID();
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getContext()),
@@ -252,7 +252,7 @@ public class UserEventFragment extends Fragment {
         pDialog.setMessage(getString(R.string.remove_event_progress_dialog_message));
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/delete/event/" + event.getEventID();
+        String urlString = SERVER_URL + "/user/delete/event/" + event.getEventID();
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getContext()),

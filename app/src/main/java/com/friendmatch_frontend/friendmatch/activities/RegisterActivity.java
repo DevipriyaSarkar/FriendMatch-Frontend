@@ -44,7 +44,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.friendmatch_frontend.friendmatch.application.AppController.FIRST_HOBBY_ENTRY;
-import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
+import static com.friendmatch_frontend.friendmatch.application.AppController.SERVER_URL;
 
 
 /**
@@ -215,7 +215,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void registerUser(final String mName, final String mEmail, final String mPassword) throws MalformedURLException,
             URISyntaxException {
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/sign_up?inputName=" + mName
+        String urlString = SERVER_URL + "/sign_up?inputName=" + mName
                 + "&inputEmail=" + mEmail + "&inputPassword=" + mPassword;
 
         // URL encode the string
@@ -304,8 +304,10 @@ public class RegisterActivity extends AppCompatActivity {
      */
     public void validateUser(final String mEmail, final String mPassword) throws MalformedURLException, URISyntaxException {
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/validate_login?inputEmail="
+        String urlString = SERVER_URL + "/validate_login?inputEmail="
                 + mEmail + "&inputPassword=" + mPassword;
+
+        Log.d(TAG, urlString);
 
         // URL encode the string
         URL url = new URL(urlString);

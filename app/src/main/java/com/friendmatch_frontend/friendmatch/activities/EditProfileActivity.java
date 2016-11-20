@@ -38,7 +38,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import static com.friendmatch_frontend.friendmatch.application.AppController.FIRST_HOBBY_ENTRY;
-import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
+import static com.friendmatch_frontend.friendmatch.application.AppController.SERVER_URL;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -104,8 +104,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 if (isEmpty(ageStr)) {
                     isFormFilled = false;
-                }
-                else
+                } else
                     age = Integer.parseInt(ageStr);
 
                 String phone = editPhone.getText().toString();
@@ -155,7 +154,7 @@ public class EditProfileActivity extends AppCompatActivity {
         pDialog.setMessage(getString(R.string.saving_progress_dialog_message));
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/" + userID + "/edit/profile?gender="
+        String urlString = SERVER_URL + "/user/" + userID + "/edit/profile?gender="
                 + gender + "&age=" + age + "&phone=" + phone + "&location=" + location + "&city=" + city;
 
         // URL encode the string
@@ -178,7 +177,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, response.toString());
                         try {
-                            if (response.getInt("code")== 200) {
+                            if (response.getInt("code") == 200) {
 
                                 SharedPreferences sharedPref = getSharedPreferences("USER_LOGIN", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
@@ -189,7 +188,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), R.string.profile_saved_message, Toast.LENGTH_SHORT).show();
                                 finish();
 
-                                if(FIRST_HOBBY_ENTRY) {
+                                if (FIRST_HOBBY_ENTRY) {
                                     Intent intent = new Intent(getApplicationContext(), HobbyActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                     startActivity(intent);

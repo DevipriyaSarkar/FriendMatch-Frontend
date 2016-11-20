@@ -34,7 +34,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.ArrayList;
 
-import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
+import static com.friendmatch_frontend.friendmatch.application.AppController.SERVER_URL;
 
 
 public class FriendSuggestionFragment extends Fragment {
@@ -65,7 +65,7 @@ public class FriendSuggestionFragment extends Fragment {
 
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/suggest/friends";
+        String urlString = SERVER_URL + "/user/suggest/friends";
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getContext()),

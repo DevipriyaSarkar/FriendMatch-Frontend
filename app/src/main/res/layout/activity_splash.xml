@@ -18,10 +18,10 @@
         android:layout_centerHorizontal="true">
 
         <TextView
-            android:text="Hello! Welcome to Friend Match!"
+            android:text="@string/hello_welcome_to_friend_match"
             android:textAppearance="?android:textAppearanceLarge"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="@dimen/welcome_padding"
             android:textColor="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -33,7 +33,52 @@
             android:textColor="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/button_margin"
             android:id="@+id/startButton" />
+
+        <Button
+            android:text="@string/local_host_button_text"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:background="@color/colorAccent"
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/button_margin"
+            android:id="@+id/enableLocalHostButton" />
+
+        <LinearLayout
+            android:id="@+id/localHostLayout"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/localHostAddress"
+                    android:textColor="@android:color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/local_host_address_prompt"
+                    android:digits="@string/ip_address_allowed_digits"
+                    android:maxLines="1" />
+
+                <Button
+                    android:text="@string/start_button_text"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:background="@color/colorAccent"
+                    android:textColor="@android:color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/button_margin"
+                    android:id="@+id/localHostStartButton" />
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

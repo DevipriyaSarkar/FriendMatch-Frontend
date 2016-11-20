@@ -37,7 +37,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.ArrayList;
 
-import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
+import static com.friendmatch_frontend.friendmatch.application.AppController.SERVER_URL;
 
 
 public class EventSuggestionFragment extends Fragment {
@@ -71,7 +71,7 @@ public class EventSuggestionFragment extends Fragment {
 
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/suggest/events";
+        String urlString = SERVER_URL + "/user/suggest/events";
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getContext()),
@@ -177,7 +177,7 @@ public class EventSuggestionFragment extends Fragment {
         pDialog.setMessage(getString(R.string.add_event_progress_dialog_message));
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/add/event/" + event.getEventID();
+        String urlString = SERVER_URL + "/user/add/event/" + event.getEventID();
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getContext()),

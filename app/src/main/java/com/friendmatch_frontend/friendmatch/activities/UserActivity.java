@@ -53,7 +53,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.ArrayList;
 
-import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
+import static com.friendmatch_frontend.friendmatch.application.AppController.SERVER_URL;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -195,7 +195,7 @@ public class UserActivity extends AppCompatActivity {
 
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/" + friendID + "/profile";
+        String urlString = SERVER_URL + "/user/" + friendID + "/profile";
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
@@ -525,33 +525,33 @@ public class UserActivity extends AppCompatActivity {
 
             eventList.addOnItemTouchListener(new RecyclerViewClickListener(getApplicationContext(),
                     new RecyclerViewClickListener.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, final int position) {
-                    // ask if they wanna attend that event
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
-                    alertDialogBuilder.setTitle(R.string.add_event_dialog_title);
-                    alertDialogBuilder.setMessage(R.string.add_event_dialog_message);
-                    alertDialogBuilder.setPositiveButton(R.string.dialog_positive_button,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    if (eventArrayList.get(position).isAttending())
-                                        removeEvent(eventArrayList.get(position));
-                                    else
-                                        addEvent(eventArrayList.get(position));
-                                }
-                            });
-                    alertDialogBuilder.setNegativeButton(R.string.dialog_negative_button,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    // do nothing
-                                }
-                            });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
-            }));
+                        @Override
+                        public void onItemClick(View view, final int position) {
+                            // ask if they wanna attend that event
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                            alertDialogBuilder.setTitle(R.string.add_event_dialog_title);
+                            alertDialogBuilder.setMessage(R.string.add_event_dialog_message);
+                            alertDialogBuilder.setPositiveButton(R.string.dialog_positive_button,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface arg0, int arg1) {
+                                            if (eventArrayList.get(position).isAttending())
+                                                removeEvent(eventArrayList.get(position));
+                                            else
+                                                addEvent(eventArrayList.get(position));
+                                        }
+                                    });
+                            alertDialogBuilder.setNegativeButton(R.string.dialog_negative_button,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            // do nothing
+                                        }
+                                    });
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
+                        }
+                    }));
 
         } else {
             eventLayout.setVisibility(View.GONE);
@@ -564,7 +564,7 @@ public class UserActivity extends AppCompatActivity {
         pDialog.setMessage(getString(R.string.add_friend_progress_dialog_message));
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/add/friend/" + friendID;
+        String urlString = SERVER_URL + "/user/add/friend/" + friendID;
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
@@ -621,7 +621,7 @@ public class UserActivity extends AppCompatActivity {
         pDialog.setMessage(getString(R.string.remove_friend_progress_dialog_message));
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/delete/friend/" + friendID;
+        String urlString = SERVER_URL + "/user/delete/friend/" + friendID;
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
@@ -678,7 +678,7 @@ public class UserActivity extends AppCompatActivity {
         pDialog.setMessage(getString(R.string.add_event_progress_dialog_message));
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/add/event/" + event.getEventID();
+        String urlString = SERVER_URL + "/user/add/event/" + event.getEventID();
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
@@ -734,7 +734,7 @@ public class UserActivity extends AppCompatActivity {
         pDialog.setMessage(getString(R.string.remove_event_progress_dialog_message));
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/delete/event/" + event.getEventID();
+        String urlString = SERVER_URL + "/user/delete/event/" + event.getEventID();
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),

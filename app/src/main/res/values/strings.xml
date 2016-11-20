@@ -10,7 +10,6 @@
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
     <string name="network_error">Sorry, we could not connect to our server. Please try later.</string>
     <string name="error_incorrect_credentials">Incorrect credentials</string>
     <string name="action_register">New to Friend Match? Register</string>
@@ -67,7 +66,6 @@
     <string name="prompt_phone">Phone Number</string>
     <string name="prompt_city">City</string>
     <string name="prompt_location">Locality</string>
-    <string name="hobby_title">Hobbies</string>
     <string name="profile_edit_button">Edit</string>
     <string name="saving_progress_dialog_message">Saving your details. Please wait.</string>
     <string name="profile_saved_message">Profile saved.</string>
@@ -123,7 +121,12 @@
     <string name="user_hobbies_heading">Your Hobbies</string>
     <string name="all_event_heading">All Events</string>
     <string name="user_event_heading">Your Events</string>
-    <string name="title_activity_main2">Main2Activity</string>
     <string name="select_hobby_title">Select Hobbies</string>
+    <string name="local_host_button_text">HAVE A LOCAL SERVER?</string>
+    <string name="local_host_address_prompt">Local IP Address with Endpoint</string>
+    <string name="hello_welcome_to_friend_match">Hello! Welcome to Friend Match!</string>
+    <string name="local_host_address_empty_error">Please specify IP address</string>
+    <string name="local_host_address_incorrect_error">Invalid IP Address</string>
+    <string name="ip_address_allowed_digits">0123456789.:</string>
 
 </resources>

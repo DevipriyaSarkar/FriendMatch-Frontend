@@ -44,7 +44,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
+import static com.friendmatch_frontend.friendmatch.application.AppController.SERVER_URL;
 
 /**
  * A login screen that offers login via email/password.
@@ -225,7 +225,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void validateUser(final String mEmail, final String mPassword) throws MalformedURLException, URISyntaxException {
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/validate_login?inputEmail="
+        String urlString = SERVER_URL + "/validate_login?inputEmail="
                 + mEmail + "&inputPassword=" + mPassword;
 
         // URL encode the string
@@ -234,6 +234,8 @@ public class LoginActivity extends AppCompatActivity {
                 url.getPath(), url.getQuery(), url.getRef());
 
         urlString = uri.toASCIIString();
+
+        Log.d(TAG, urlString);
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),

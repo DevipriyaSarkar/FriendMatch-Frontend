@@ -45,7 +45,7 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 
-import static com.friendmatch_frontend.friendmatch.application.AppController.LOCAL_IP_ADDRESS;
+import static com.friendmatch_frontend.friendmatch.application.AppController.SERVER_URL;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity
             updateNavUI(userName, userEmail, userGender);
         } else {
 
-            String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/user/info";
+            String urlString = SERVER_URL + "/user/info";
 
             // handle cookies
             CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity
 
         showProgressDialog();
 
-        String urlString = "http://" + LOCAL_IP_ADDRESS + ":5000/logout";
+        String urlString = SERVER_URL + "/logout";
 
         // handle cookies
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(getApplicationContext()),

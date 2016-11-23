@@ -128,5 +128,6 @@
     <string name="local_host_address_empty_error">Please specify IP address</string>
     <string name="local_host_address_incorrect_error">Invalid IP Address</string>
     <string name="ip_address_allowed_digits">0123456789.:</string>
+    <string name="splash_logo_content_desc">Friend Match Logo</string>
 
 </resources>

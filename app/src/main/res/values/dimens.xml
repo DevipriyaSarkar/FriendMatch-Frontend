@@ -13,4 +13,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="button_margin">5dp</dimen>
     <dimen name="welcome_padding">10dp</dimen>
+    <dimen name="splash_logo_dimen">150dp</dimen>
 </resources>

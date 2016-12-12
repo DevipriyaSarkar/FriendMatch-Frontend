@@ -249,12 +249,12 @@ public class UserActivity extends AppCompatActivity {
     public void updateUI(JSONArray response) throws JSONException {
         JSONObject infoObj, friendsObj, allHobbyObj, commonHobbyObj, relatedHobbyObj, eventObj;
 
-        infoObj = response.getJSONObject(0);
-        friendsObj = response.getJSONObject(1);
-        allHobbyObj = response.getJSONObject(2);
-        commonHobbyObj = response.getJSONObject(3);
-        relatedHobbyObj = response.getJSONObject(4);
-        eventObj = response.getJSONObject(5);
+        infoObj = response.getJSONObject(0).getJSONObject("info");
+        friendsObj = response.getJSONObject(1).getJSONObject("friends");
+        allHobbyObj = response.getJSONObject(2).getJSONObject("hobby");
+        commonHobbyObj = response.getJSONObject(3).getJSONObject("common_hobby");
+        relatedHobbyObj = response.getJSONObject(4).getJSONObject("related_hobby");
+        eventObj = response.getJSONObject(5).getJSONObject("event");
 
         updateInfo(infoObj);
         updateCommonHobby(commonHobbyObj);
@@ -284,7 +284,7 @@ public class UserActivity extends AppCompatActivity {
             TextView infoCity = (TextView) findViewById(R.id.infoCity);
 
             // extract data
-            JSONObject info = infoObj.getJSONObject("info");
+            JSONObject info = infoObj.getJSONObject("message").getJSONObject("info");
 
             // set data
             infoGender.setText(friendGender);
@@ -312,7 +312,7 @@ public class UserActivity extends AppCompatActivity {
             hobbyError.setVisibility(View.GONE);
 
             final ArrayList<Hobby> commonArrayList = new ArrayList<>();
-            JSONArray hobbyJSONArray = commonHobbyObj.getJSONArray("common_hobby");
+            JSONArray hobbyJSONArray = commonHobbyObj.getJSONObject("message").getJSONArray("common_hobby");
             for (int i = 0; i < hobbyJSONArray.length(); i++) {
                 JSONObject hobby = hobbyJSONArray.getJSONObject(i);
                 Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"),
@@ -338,6 +338,10 @@ public class UserActivity extends AppCompatActivity {
                 }
             });
 
+        } else if (code == 204) {
+            hobbyLayout.setVisibility(View.GONE);
+            hobbyError.setText(commonHobbyObj.getJSONObject("message").getString("common_hobby"));
+            hobbyError.setVisibility(View.VISIBLE);
         } else {
             hobbyLayout.setVisibility(View.GONE);
             hobbyError.setVisibility(View.VISIBLE);
@@ -356,7 +360,7 @@ public class UserActivity extends AppCompatActivity {
             hobbyError.setVisibility(View.GONE);
 
             final ArrayList<Hobby> relatedArrayList = new ArrayList<>();
-            JSONArray hobbyJSONArray = relatedHobbyObj.getJSONArray("related_hobby");
+            JSONArray hobbyJSONArray = relatedHobbyObj.getJSONObject("message").getJSONArray("related_hobby");
             for (int i = 0; i < hobbyJSONArray.length(); i++) {
                 JSONObject hobby = hobbyJSONArray.getJSONObject(i);
                 Hobby h = new Hobby(hobby.getInt("related_hobby_id"), hobby.getString("hobby_name"),
@@ -382,6 +386,10 @@ public class UserActivity extends AppCompatActivity {
                 }
             });
 
+        } else if (code == 204) {
+            hobbyLayout.setVisibility(View.GONE);
+            hobbyError.setText(relatedHobbyObj.getJSONObject("message").getString("common_hobby"));
+            hobbyError.setVisibility(View.VISIBLE);
         } else {
             hobbyLayout.setVisibility(View.GONE);
             hobbyError.setVisibility(View.VISIBLE);
@@ -400,7 +408,7 @@ public class UserActivity extends AppCompatActivity {
             hobbyError.setVisibility(View.GONE);
 
             final ArrayList<Hobby> hobbyArrayList = new ArrayList<>();
-            JSONArray hobbyJSONArray = allHobbyObj.getJSONArray("hobby");
+            JSONArray hobbyJSONArray = allHobbyObj.getJSONObject("message").getJSONArray("hobby");
             for (int i = 0; i < hobbyJSONArray.length(); i++) {
                 JSONObject hobby = hobbyJSONArray.getJSONObject(i);
                 Hobby h = new Hobby(hobby.getInt("hobby_id"), hobby.getString("hobby_name"),
@@ -426,6 +434,10 @@ public class UserActivity extends AppCompatActivity {
                 }
             });
 
+        } else if (code == 204) {
+            hobbyLayout.setVisibility(View.GONE);
+            hobbyError.setText(allHobbyObj.getJSONObject("message").getString("common_hobby"));
+            hobbyError.setVisibility(View.VISIBLE);
         } else {
             hobbyLayout.setVisibility(View.GONE);
             hobbyError.setVisibility(View.VISIBLE);
@@ -444,7 +456,7 @@ public class UserActivity extends AppCompatActivity {
             friendError.setVisibility(View.GONE);
 
             final ArrayList<User> friendArrayList = new ArrayList<>();
-            JSONArray friendJSONArray = friendsObj.getJSONArray("friends");
+            JSONArray friendJSONArray = friendsObj.getJSONObject("message").getJSONArray("friends");
             for (int i = 0; i < friendJSONArray.length(); i++) {
                 JSONObject friend = friendJSONArray.getJSONObject(i);
                 User user = new User(friend.getInt("friend_id"), friend.getString("user_name"),
@@ -501,7 +513,7 @@ public class UserActivity extends AppCompatActivity {
             eventError.setVisibility(View.GONE);
 
             final ArrayList<Event> eventArrayList = new ArrayList<>();
-            JSONArray eventJSONArray = eventObj.getJSONArray("event");
+            JSONArray eventJSONArray = eventObj.getJSONObject("message").getJSONArray("event");
             for (int i = 0; i < eventJSONArray.length(); i++) {
                 JSONObject event = eventJSONArray.getJSONObject(i);
                 Event e = new Event(event.getInt("event_id"), event.getString("event_name"),

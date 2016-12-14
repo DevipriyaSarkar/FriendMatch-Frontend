@@ -15,3 +15,6 @@ eg.
 public static String LOCAL_IP_ADDRESS = "http://192.168.1.107:5000";
 public static String SERVER_URL = LOCAL_IP_ADDRESS;
 ```
+
+## License
+The content of this repository is licensed under [MIT LICENSE](LICENSE).

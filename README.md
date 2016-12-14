@@ -1,9 +1,12 @@
 # FriendMatch (Front End)
-Android app of FriendMatch
+Android app of [FriendMatch](https://devipriyasarkar.github.io/FriendMatch/) - a platform that finds you friends and suggests events based on your hobbies.  
 
 DBMS Project by [Devipriya Sarkar](https://github.com/DevipriyaSarkar) and [Namita Roy](https://github.com/namitaroy63)
 
-## Notes
+## Download
+Download app from [here](https://github.com/DevipriyaSarkar/FriendMatch-Frontend/releases).
+
+## Setup
 
 To run the app on your local server, set up the local server using the instruction given [here] (https://github.com/DevipriyaSarkar/FriendMatch-Backend#setup-instructions).
 

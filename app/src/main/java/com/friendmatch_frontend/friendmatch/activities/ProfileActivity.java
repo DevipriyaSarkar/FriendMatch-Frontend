@@ -129,8 +129,8 @@ public class ProfileActivity extends AppCompatActivity {
     public void updateUI(JSONArray response) throws JSONException {
         JSONObject infoObj, friendsObj;
 
-        infoObj = response.getJSONObject(0).getJSONObject("info");
-        friendsObj = response.getJSONObject(1).getJSONObject("friends");
+        infoObj = response.getJSONObject(0);
+        friendsObj = response.getJSONObject(1);
 
         updateInfo(infoObj);
         updateFriends(friendsObj);
@@ -177,7 +177,7 @@ public class ProfileActivity extends AppCompatActivity {
             TextView infoCity = (TextView) findViewById(R.id.infoCity);
 
             // extract data
-            JSONObject info = infoObj.getJSONObject("message").getJSONObject("info");
+            JSONObject info = infoObj.getJSONObject("info");
             userID = info.getInt("id");
             if (info.getString("gender").equals("M")) {
                 gender = "Male";
@@ -224,7 +224,7 @@ public class ProfileActivity extends AppCompatActivity {
             friendError.setVisibility(View.GONE);
 
             final ArrayList<User> friendArrayList = new ArrayList<>();
-            JSONArray friendJSONArray = friendsObj.getJSONObject("message").getJSONArray("friends");
+            JSONArray friendJSONArray = friendsObj.getJSONArray("friends");
             for (int i = 0; i < friendJSONArray.length(); i++) {
                 JSONObject friend = friendJSONArray.getJSONObject(i);
                 User user = new User(friend.getInt("friend_id"), friend.getString("user_name"),

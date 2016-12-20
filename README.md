@@ -19,5 +19,16 @@ public static String LOCAL_IP_ADDRESS = "http://192.168.1.107:5000";
 public static String SERVER_URL = LOCAL_IP_ADDRESS;
 ```
 
+## Screenshots
+<img src="screenshots/screenshot1.png" width="360" alt="Splash Screen" >
+<img src="screenshots/screenshot2.png" width="360" alt="Log In Screen" >
+<img src="screenshots/screenshot3.png" width="360" alt="Friend Suggestion Screen" >
+<img src="screenshots/screenshot4.png" width="360" alt="Event Suggestion Screen" >
+<img src="screenshots/screenshot5.png" width="360" alt="Navigation Drawer Option Main Screen" >
+<img src="screenshots/screenshot6.png" width="360" alt="Profile Screen" >
+<img src="screenshots/screenshot7.png" width="360" alt="Hobby Screen" >
+<img src="screenshots/screenshot8.png" width="360" alt="Event Screen" >
+<img src="screenshots/screenshot9.png" width="360" alt="User Profile Screen" >
+
 ## License
 The content of this repository is licensed under [MIT LICENSE](LICENSE).

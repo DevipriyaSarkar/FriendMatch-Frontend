@@ -52,7 +52,6 @@ import static com.friendmatch_frontend.friendmatch.application.AppController.SER
 public class LoginActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
-    private static int LOGGED_IN = 0;
 
 
     // UI references.
@@ -99,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("USER_LOGIN", Context.MODE_PRIVATE);
         String user_email = sharedPreferences.getString("email", null);
         if (user_email != null) {
-            LOGGED_IN = 1;
             String user_password = sharedPreferences.getString("password", null);
             showProgress(true);
             try {

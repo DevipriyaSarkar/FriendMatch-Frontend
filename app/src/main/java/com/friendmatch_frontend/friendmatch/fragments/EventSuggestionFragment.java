@@ -89,8 +89,6 @@ public class EventSuggestionFragment extends Fragment {
                             int code = response.getInt("code");
                             Log.d(TAG, "Code: " + code);
 
-                            boolean isAttending = false; // only users who are not friends are suggested
-
                             if (code == 200) {
                                 JSONArray eventJSONArray = (response.getJSONObject("message")).getJSONArray("suggested_event");
                                 eventArrayList = new ArrayList<>();
@@ -99,7 +97,7 @@ public class EventSuggestionFragment extends Fragment {
                                     JSONObject eventObj = eventJSONArray.getJSONObject(i);
                                     Event event = new Event(eventObj.getInt("event_id"), eventObj.getString("event_name"),
                                             eventObj.getString("event_city"), eventObj.getString("event_date"), eventImageID,
-                                            isAttending);     // only non-friend users are showed
+                                            false);     // only events that the user is not already attending are suggested
                                     eventArrayList.add(event);
                                 }
 

@@ -83,8 +83,6 @@ public class FriendSuggestionFragment extends Fragment {
                             int code = response.getInt("code");
                             Log.d(TAG, "Code: " + code);
 
-                            boolean isFriend = false; // only users who are not friends are suggested
-
                             if (code == 200) {
                                 JSONArray friendJSONArray = (response.getJSONObject("message")).getJSONArray("suggestions");
                                 final ArrayList<User> friendArrayList = new ArrayList<>();

@@ -18,25 +18,22 @@ import static com.friendmatch_frontend.friendmatch.application.AppController.FIR
 
 public class HobbyActivity extends AppCompatActivity {
 
-    private final String TAG = this.getClass().getSimpleName();
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+    // private final String TAG = this.getClass().getSimpleName();
     private String[] pageTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hobby);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         pageTitle = getResources().getStringArray(R.array.hobby_page_title);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager_hobby);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_hobby);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs_hobby);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_hobby);
         tabLayout.setupWithViewPager(viewPager);
 
         if (FIRST_HOBBY_ENTRY) {
@@ -83,7 +80,7 @@ public class HobbyActivity extends AppCompatActivity {
     }
 
     private Intent getParentActivityIntentImpl() {
-        Intent intent = null;
+        Intent intent;
 
         // Here you need to do some logic to determine from which Activity you came.
         if (!FIRST_HOBBY_ENTRY) {

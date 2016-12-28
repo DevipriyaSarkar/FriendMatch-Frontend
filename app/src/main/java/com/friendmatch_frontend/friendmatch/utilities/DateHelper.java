@@ -27,7 +27,7 @@ public class DateHelper {
         String longDate = null;
         SimpleDateFormat shortFormat = new SimpleDateFormat(shortPattern, Locale.US);
         SimpleDateFormat longFormat = new SimpleDateFormat(longPattern, Locale.US);
-        Date shortDate = null;
+        Date shortDate;
         try {
             shortDate = shortFormat.parse(date);
             longDate = longFormat.format(shortDate);
@@ -41,7 +41,7 @@ public class DateHelper {
         String shortDate = null;
         SimpleDateFormat shortFormat = new SimpleDateFormat(shortPattern, Locale.US);
         SimpleDateFormat longFormat = new SimpleDateFormat(longPattern, Locale.US);
-        Date longDate = null;
+        Date longDate;
         try {
             longDate = longFormat.parse(date);
             shortDate = shortFormat.format(longDate);

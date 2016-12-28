@@ -20,7 +20,7 @@ import static com.friendmatch_frontend.friendmatch.application.AppController.SER
 public class SplashActivity extends AppCompatActivity {
 
 
-    private final String TAG = this.getClass().getSimpleName();
+    // private final String TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +86,7 @@ public class SplashActivity extends AppCompatActivity {
             });
 
         } else {
-            String url = sp.getString("SERVER_URL", MY_SERVER);
-            SERVER_URL = url;
+            SERVER_URL = sp.getString("SERVER_URL", MY_SERVER);
             finish();
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);

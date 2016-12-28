@@ -14,25 +14,22 @@ import com.friendmatch_frontend.friendmatch.fragments.UserEventFragment;
 public class EventActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
     private String[] pageTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         pageTitle = getResources().getStringArray(R.array.event_page_title);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager_event);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_event);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs_event);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_event);
         tabLayout.setupWithViewPager(viewPager);
     }
 

@@ -61,7 +61,7 @@ public class AllHobbyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_all_hobby, container, false);;
+        View view = inflater.inflate(R.layout.fragment_all_hobby, container, false);
 
         // initialize progress dialog
         pDialog = new ProgressDialog(getContext());
